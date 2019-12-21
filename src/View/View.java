@@ -165,10 +165,10 @@ public class View {
                                                                                            //PvP mondeeeeee
         }
         else if( inputString.equalsIgnoreCase( "Show collection")){
-//            if( gameType.equals("Day") || gameType.equals("Water"))
-//                Controller.printArrayList(Profile.currentProfile.getZombieCollection());
-//            else if( gameType.equals("Zombie"))
-//                Controller.printArrayList(Profile.currentProfile.getZombieCollection());
+            if( gameType.equals("Day") || gameType.equals("Water"))
+                Controller.printArrayList(Profile.currentProfile.getZombieCollection());
+            else if( gameType.equals("Zombie"))
+                Controller.printArrayList(Profile.currentProfile.getZombieCollection());
 
         }
 
