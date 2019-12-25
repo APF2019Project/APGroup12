@@ -83,6 +83,11 @@ public class AttackerPlant extends Plant
                 false , pea , 1 , 4 , "Right" , coordination));
     }
 
+    public static void putSplitPea(Cell coordination)
+    {
+
+    }
+
     public static void putMelonpult(Cell coordination)
     {
         Effect effect = new Effect(0 , 0 , false , false);

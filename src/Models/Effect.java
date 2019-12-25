@@ -2,29 +2,29 @@ package Models;
 
 public class Effect
 {
-    private int slowTime , stopTime;
-    private boolean slowEffect , stopEffect;
+    private int slowDuration, stunDuration;
+    private boolean slow, stun;
 
-    public Effect(int slowTime, int stopTime, boolean slowEffect, boolean stopEffect) {
-        this.slowTime = slowTime;
-        this.stopTime = stopTime;
-        this.slowEffect = slowEffect;
-        this.stopEffect = stopEffect;
+    public Effect(int slowDuration, int stunDuration, boolean slow, boolean stun) {
+        this.slowDuration = slowDuration;
+        this.stunDuration = stunDuration;
+        this.slow = slow;
+        this.stun = stun;
     }
 
-    public int getSlowTime() {
-        return slowTime;
+    public int getSlowDuration() {
+        return slowDuration;
     }
 
-    public int getStopTime() {
-        return stopTime;
+    public int getStunDuration() {
+        return stunDuration;
     }
 
-    public boolean isSlowEffect() {
-        return slowEffect;
+    public boolean isSlow() {
+        return slow;
     }
 
-    public boolean isStopEffect() {
-        return stopEffect;
+    public boolean isStun() {
+        return stun;
     }
 }
