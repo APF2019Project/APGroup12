@@ -1,4 +1,12 @@
-package Models;
+public class Plant extends Card
+{
+    protected int requiredSuns;
 
-public class Plant extends Card{
+    public int getRequiredSuns() {
+        return requiredSuns;
+    }
+
+    public void setRequiredSuns(int requiredSuns) {
+        this.requiredSuns = requiredSuns;
+    }
 }
