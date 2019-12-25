@@ -1,4 +1,6 @@
-class Cell {
+package Models;
+
+public class Cell {
     private Map map;
     private int x, y;
     private String type;
@@ -91,7 +93,7 @@ class Cell {
 
     public Zombie getClosestZombie()
     {
-        double dist = 100.0;
+        double dist = 100000.0;
         Zombie res = null;
 
         for (int i = 1; i <= 6; i++)

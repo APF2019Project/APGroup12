@@ -1,3 +1,5 @@
+package Models;
+
 public class Effect
 {
     private int slowTime , stopTime;

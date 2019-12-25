@@ -1,14 +1,55 @@
 package Models;
 
 public class Card {
-    private String name ;
-    private int coolDownTime ;
-    private  int health ;
+    protected Cell coordination;
+    protected String name, type;
+    protected int coolDownTime, health , currentCoolDownTime;
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public int getCoolDownTime() { return coolDownTime; }
-    public void setCoolDownTime(int coolDownTime) { this.coolDownTime = coolDownTime; }
-    public int getHealth() { return health; }
-    public void setHealth(int health) { this.health = health; }
+    protected Card(String name, String type, int health, int coolDownTime, Cell coordination)
+    {
+        this.name = name;
+        this.type = type;
+        this.health = health;
+        this.coolDownTime = coolDownTime;
+        this.coordination = coordination;
+        this.currentCoolDownTime = 0;
+    }
+
+    public void show()
+    {
+
+    }
+
+    public void doYourJob()
+    {
+
+    }
+
+    public boolean inCoolDown() {
+        return currentCoolDownTime == 0;
+    }
+
+    public Cell getCoordination() {
+        return coordination;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getCoolDownTime() {
+        return coolDownTime;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getCurrentCoolDownTime() {
+        return currentCoolDownTime;
+    }
 }

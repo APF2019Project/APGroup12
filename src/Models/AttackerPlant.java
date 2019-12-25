@@ -1,19 +1,15 @@
-class AttackerPlant extends Plant
+package Models;
+
+public class AttackerPlant extends Plant
 {
     private Pea pea;
     private int numberOfBulletsPerShoot, coolDownForNextShoot , currentCoolDownForNextShoot;
     private String direction;
 
-    protected AttackerPlant(String name, String type, int health, int coolDownTime, int requiredSuns, boolean cactusEffect,
-                  Pea pea, int numberOfBulletsPerShoot, int coolDownForNextShoot, String direction,
-                  Cell coordination)
+    protected AttackerPlant(String name, String type, int health, int coolDownTime, int requiredSuns, boolean cactus,
+                  Pea pea, int numberOfBulletsPerShoot, int coolDownForNextShoot, String direction, Cell coordination)
     {
-        this.name = name;
-        this.type = type;
-        this.health = health;
-        this.coolDownTime = coolDownTime;
-        this.requiredSuns = requiredSuns;
-        this.cactusEffect = cactusEffect;
+        super(name , type , health , coolDownTime , requiredSuns , cactus , coordination);
         this.pea = pea;
         this.numberOfBulletsPerShoot = numberOfBulletsPerShoot;
         this.coolDownForNextShoot = coolDownForNextShoot;
@@ -33,7 +29,7 @@ class AttackerPlant extends Plant
     {
         Effect effect = new Effect(3 , 0 , true , false);
         Pea pea = new Pea(1 , false , effect);
-        coordination.insertCard(new AttackerPlant("Snow Pea" , "Land" , 3 , 3 , 3 ,
+        coordination.insertCard(new AttackerPlant("Snow Models.Pea" , "Land" , 3 , 3 , 3 ,
                 false , pea , 1 , 3 , "Right" , coordination));
     }
 
@@ -65,7 +61,7 @@ class AttackerPlant extends Plant
     {
         Effect effect = new Effect(0 , 0 , false , false);
         Pea pea = new Pea(1 , false , effect);
-        coordination.insertCard(new AttackerPlant("Gatling Pea" , "Land" , 3 , 4 , 5 ,
+        coordination.insertCard(new AttackerPlant("Gatling Models.Pea" , "Land" , 3 , 4 , 5 ,
                 false , pea , 4 , 5 , "Right" , coordination));
     }
 
@@ -101,7 +97,7 @@ class AttackerPlant extends Plant
                 false , pea , 1 , 4 , "Closest" , coordination));
     }
 
-    void doYourJob()
+    public void doYourJob()
     {
         if (currentCoolDownForNextShoot > 0)
         {

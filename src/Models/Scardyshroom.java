@@ -1,8 +1,10 @@
+package Models;
+
 public class Scardyshroom extends AttackerPlant
 {
-    private Scardyshroom(String name, String type, int health, int coolDownTime, int requiredSuns, boolean cactusEffect,
+    private Scardyshroom(String name, String type, int health, int coolDownTime, int requiredSuns, boolean cactus,
                  Pea pea, int numberOfBulletsPerShoot, int coolDownForNextShoot, String direction, Cell coordination) {
-        super(name, type, health, coolDownTime, requiredSuns, cactusEffect, pea, numberOfBulletsPerShoot,
+        super(name, type, health, coolDownTime, requiredSuns, cactus, pea, numberOfBulletsPerShoot,
                 coolDownForNextShoot, direction, coordination);
     }
 
@@ -15,7 +17,7 @@ public class Scardyshroom extends AttackerPlant
     }
 
     @Override
-    void doYourJob()
+    public void doYourJob()
     {
         Zombie target = coordination.getRightZombie();
 

@@ -1,10 +1,20 @@
+package Models;
+
 public class Plant extends Card
 {
-    protected boolean cactusEffect;
     protected int requiredSuns;
+    protected boolean cactus;
 
-    public boolean isCactusEffect() {
-        return cactusEffect;
+    protected Plant(String name, String type, int health, int coolDownTime, int requiredSuns, boolean cactus,
+                    Cell coordination)
+    {
+        super(name , type , health , coolDownTime , coordination);
+        this.requiredSuns = requiredSuns;
+        this.cactus = cactus;
+    }
+
+    public boolean isCactus() {
+        return cactus;
     }
 
     public int getRequiredSuns() {

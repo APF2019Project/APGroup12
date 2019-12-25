@@ -1,3 +1,5 @@
+package Models;
+
 import java.util.ArrayList;
 
 public class ExplosivePlant extends Plant {
@@ -6,13 +8,9 @@ public class ExplosivePlant extends Plant {
     private ArrayList<Cell> affectedCells;
 
     private ExplosivePlant(String name , String type , int health , int coolDownTime , int requiredSuns ,
-                           int delay , boolean mine , Cell coordination , ArrayList<Cell> affectedCells)
+                           boolean cactus, int delay , boolean mine , Cell coordination , ArrayList<Cell> affectedCells)
     {
-        this.name = name;
-        this.type = type;
-        this.health = health;
-        this.coolDownTime = coolDownTime;
-        this.requiredSuns = requiredSuns;
+        super(name , type , health , coolDownTime , requiredSuns , cactus , coordination);
         this.delay = delay;
         this.coordination = coordination;
         this.affectedCells = affectedCells;
@@ -34,7 +32,7 @@ public class ExplosivePlant extends Plant {
         }
 
         new ExplosivePlant("Cherry Bomb" , "Land" , 100 , 4 , 2 ,
-                0 , false , coordination , affectedCells);
+                false , 0 , false , coordination , affectedCells);
     }
 
     public static void putJalapeno(Cell coordination)
@@ -49,7 +47,7 @@ public class ExplosivePlant extends Plant {
         }
 
         new ExplosivePlant("Jalapeno" , "Land" , 100 , 5 , 4 ,
-                0 , false , coordination , affectedCells);
+                false , 0 , false , coordination , affectedCells);
     }
 
     public static void putPotatoMine(Cell coordination)
@@ -61,7 +59,7 @@ public class ExplosivePlant extends Plant {
         if (res != null) affectedCells.add(res);
 
         new ExplosivePlant("Potato Mine" , "Land" , 1 , 3 , 2 ,
-                1 , true , coordination , affectedCells);
+                false , 1 , true , coordination , affectedCells);
     }
 
     public void doYourJob()
