@@ -6,6 +6,14 @@ public class Cell {
     private String type;
     private Card asset;
 
+    public Cell(Map map, int x, int y, String type) {
+        this.map = map;
+        this.x = x;
+        this.y = y;
+        this.type = type;
+        asset = null;
+    }
+
     private static double getDist(Cell a , Cell b)
     {
         int x = (a.getX() - b.getX()) , y = (a.getY() - b.getY());
@@ -111,6 +119,11 @@ public class Cell {
         }
 
         return res;
+    }
+
+    public boolean getAbsorbed()
+    {
+        return false;
     }
 
     public Map getMap() {

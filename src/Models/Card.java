@@ -22,7 +22,7 @@ public class Card {
 
     public void doYourJob()
     {
-
+        currentCoolDownTime--;
     }
 
     public boolean inCoolDown() {

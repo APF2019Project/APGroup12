@@ -49,6 +49,11 @@ public class AttackerPlant extends Plant
                 false , pea , 2 , 3 , "Right" , coordination));
     }
 
+    public static void putThreepeater(Cell coordination)
+    {
+
+    }
+
     public static void putCactus(Cell coordination)
     {
         Effect effect = new Effect(0 , 0 , false , false);
@@ -63,6 +68,11 @@ public class AttackerPlant extends Plant
         Pea pea = new Pea(1 , false , effect);
         coordination.insertCard(new AttackerPlant("Gatling Models.Pea" , "Land" , 3 , 4 , 5 ,
                 false , pea , 4 , 5 , "Right" , coordination));
+    }
+
+    public static void putScardyShroom(Cell coordination)
+    {
+
     }
 
     public static void putKernelpult(Cell coordination)
@@ -97,15 +107,16 @@ public class AttackerPlant extends Plant
                 false , pea , 1 , 4 , "Closest" , coordination));
     }
 
+    @Override
     public void doYourJob()
     {
+        super.doYourJob();
+
         if (currentCoolDownForNextShoot > 0)
         {
             currentCoolDownForNextShoot--;
             return;
         }
-
-        currentCoolDownForNextShoot = coolDownForNextShoot;
         Zombie target = null;
 
         switch (direction){
@@ -124,6 +135,8 @@ public class AttackerPlant extends Plant
         {
             return;
         }
+
+        currentCoolDownForNextShoot = coolDownForNextShoot;
 
         for (int i = 0; i < numberOfBulletsPerShoot; i++)
         {

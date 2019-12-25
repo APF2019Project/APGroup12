@@ -12,7 +12,7 @@ public class Scardyshroom extends AttackerPlant
     {
         Effect effect = new Effect(0 , 0 , false , false);
         Pea pea = new Pea(1 , false , effect);
-        coordination.insertCard(new Scardyshroom("Scardy-shroom" , "Land" , 1 , 2 , 1 ,
+        coordination.insertCard(new Scardyshroom("Scaredy-shroom" , "Land" , 1 , 2 , 1 ,
                 false , pea , 1 , 2 , "Right" , coordination));
     }
 
