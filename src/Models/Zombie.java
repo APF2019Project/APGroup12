@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Zombie extends Card{
-    private String name ;
     private int speed ;
     private int price ;
     private int health ;
@@ -19,6 +18,7 @@ public class Zombie extends Card{
             power.makeYourEffect(plant);
 
     }
+
     public static ArrayList<Zombie> getAWave( ArrayList<Zombie> gameZombies){
         Random random = new Random();
         int waveSize = ( random.nextInt(7) + 4 ) ;
@@ -29,6 +29,7 @@ public class Zombie extends Card{
         }
         return waveZombies ;
     }
+
     public void setZombiePrice(){
         int price = ( (1 + this.speed ) * this.health * 10 ) ;
         this.setPrice( price );
@@ -38,8 +39,6 @@ public class Zombie extends Card{
 
     public int getPassedTurnsAfterUse() { return passedTurnsAfterUse; }
     public void setPassedTurnsAfterUse(int passedTurnsAfterUse) { this.passedTurnsAfterUse = passedTurnsAfterUse; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
     public int getSpeed() { return speed; }
     public void setSpeed(int speed) { this.speed = speed; }
     public int getPrice() { return price; }

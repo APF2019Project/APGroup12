@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Account {
     private String username ;
     private String  password ;
-    private int outerCoins ;
+    //private int outerCoins ;
     private int record ;   // killed zombies
     private ArrayList<Profile> profiles = new ArrayList<>() ;
     public static Account currentAccount ;
@@ -36,8 +36,8 @@ public class Account {
     public void setUsername(String username) { this.username = username; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-    public int getOuterCoins() { return outerCoins; }
-    public void setOuterCoins(int outerCoins) { this.outerCoins = outerCoins; }
+//    public int getOuterCoins() { return outerCoins; }
+//    public void setOuterCoins(int outerCoins) { this.outerCoins = outerCoins; }
     public int getRecord() { return record; }
     public void setRecord(int record) { this.record = record; }
     public static ArrayList<Account> getAllAccounts() { return allAccounts; }
