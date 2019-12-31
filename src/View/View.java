@@ -8,7 +8,7 @@ import Controller.* ;
 public class View {
     public static String statusMenu = "Login menu" ;
     public static String gameType ;
-    public Scanner scanner = new Scanner(System.in) ;
+    public Scanner scanner = new Scanner(System.in) ; ///
     
 
 
