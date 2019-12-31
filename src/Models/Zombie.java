@@ -5,15 +5,17 @@ import java.util.Random;
 
 public class Zombie extends Card{
     private int speed ;
-    private int price ;
-    private int health ;
-    private int coolDownTime ;
     private int passedTurnsAfterUse ;  // for check coolDown
     private ArrayList<ZombiePower> powers = new ArrayList<>();
-
     private static ArrayList<Zombie> allZombies = new ArrayList<>() ;
 
-    public void doYourJob( Plant plant ){
+    public Zombie(String type , String name , int health, int speed) {
+        super( type , name , health );
+        this.speed = speed;
+        this.price = ( ( 1 + this.speed ) * this.health * 10 ) ;
+    }
+
+    public void doYourJob(Plant plant ){
         for (ZombiePower power : this.getPowers())
             power.makeYourEffect(plant);
 
@@ -41,14 +43,11 @@ public class Zombie extends Card{
     public void setPassedTurnsAfterUse(int passedTurnsAfterUse) { this.passedTurnsAfterUse = passedTurnsAfterUse; }
     public int getSpeed() { return speed; }
     public void setSpeed(int speed) { this.speed = speed; }
-    public int getPrice() { return price; }
-    public void setPrice(int price) { this.price = price; }
-    public int gethealth() { return health; }
-    public void sethealth(int health) { this.health = health; }
     public int getCoolDownTime() { return coolDownTime; }
     public void setCoolDownTime(int coolDownTime) { this.coolDownTime = coolDownTime; }
     public ArrayList<ZombiePower> getPowers() {return powers; }
     public static ArrayList<Zombie> getAllZombies() { return allZombies; }
     public static void setAllZombies(ArrayList<Zombie> allZombies) { Zombie.allZombies = allZombies; }
+
 
 }

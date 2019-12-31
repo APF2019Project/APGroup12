@@ -1,11 +1,15 @@
 package Models;
 
+
 import java.util.ArrayList;
 
-public class Plant extends Card
-{
-    protected int requiredSuns;
-    protected boolean cactus;
+public class Plant extends Card {
+
+    private int requiredSuns;
+    private boolean cactus;
+    private ArrayList<PlantPower> powers = new ArrayList<>() ;
+    private static ArrayList<Plant> allPlants = new ArrayList<>() ;
+
 
     protected Plant(String name, String type, int health, int coolDownTime, int requiredSuns, boolean cactus,
                     Cell coordination)
@@ -13,6 +17,13 @@ public class Plant extends Card
         super(name , type , health , coolDownTime , coordination);
         this.requiredSuns = requiredSuns;
         this.cactus = cactus;
+    }
+
+    public Plant(String type , String name , int health, int coolDownTime, int requiredSuns) {
+        super( type , name , health  );
+        this.coolDownTime = coolDownTime ;
+        this.requiredSuns = requiredSuns;
+        this.price = ( this.requiredSuns * this.coolDownTime * this.health + 1 ) ;
     }
 
     public static void putPeashooter(Cell coordination)
@@ -151,4 +162,24 @@ public class Plant extends Card
     public int getRequiredSuns() {
         return requiredSuns;
     }
+
+
+
+    public void setRequiredSuns(int requiredSuns) {
+        this.requiredSuns = requiredSuns;
+    }
+
+    public void setCactus(boolean cactus) {
+        this.cactus = cactus;
+    }
+
+    public ArrayList<PlantPower> getPowers() {
+        return powers;
+    }
+
+    public void setPowers(ArrayList<PlantPower> allPowers) {
+        this.powers = allPowers;
+    }
+
+    public static ArrayList<Plant> getAllPlants() { return allPlants; }
 }

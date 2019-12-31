@@ -1,10 +1,10 @@
 package Models;
 
+
 public class ZombiePower {
-    private boolean simple ;
+
     private boolean footballer ;
     private boolean bucketHead ;
-    private boolean conehead ;
     private boolean strongCar ;
     private boolean weakCar ;
     private boolean bungee ;
@@ -35,14 +35,9 @@ public class ZombiePower {
     }
 
 
-    public boolean isSimple() { return simple; }
-    public void setSimple(boolean simple) { this.simple = simple; }
+
     public boolean isFootballer() { return footballer; }
     public void setFootballer(boolean footballer) { this.footballer = footballer; }
-    public boolean isConehead() { return conehead; }
-    public void setConehead(boolean conehead) { this.conehead = conehead; }
-    public boolean isfootballer() { return footballer; }
-    public void setfootballer(boolean footballer) { this.footballer = footballer; }
     public boolean isBucketHead() { return bucketHead; }
     public void setBucketHead(boolean bucketHead) { this.bucketHead = bucketHead; }
     public boolean isStrongCar() { return strongCar; }
@@ -67,5 +62,6 @@ public class ZombiePower {
     public void setSnorkel(boolean snorkel) { this.snorkel = snorkel; }
     public boolean isDolphinRider() { return dolphinRider; }
     public void setDolphinRider(boolean dolphinRider) { this.dolphinRider = dolphinRider; }
+
 
 }

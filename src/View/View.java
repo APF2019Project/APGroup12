@@ -4,97 +4,82 @@ import java.util.* ;
 import Models.* ;
 import Controller.* ;
 
+
 public class View {
-    public static String menuStatus = "Login menu" ;
+    public static String statusMenu = "Login menu" ;
     public static String gameType ;
     public Scanner scanner = new Scanner(System.in) ;
     
-    
 
-
-    
-
-//    public void menuController (){
-//        String status = menuStatus ;
-//        switch ( status ) {
-//            case "Login menu" :
-//                loginMenu();
-//                break;
-//            case "Main menu" :
-//                mainMenu();
-//                break;
-//            case "Profile menu" :
-//                profileMenu();
-//                break;
-//            case "Play menu" :
-//                playMenu();
-//                break;
-//            case "Collection menu" :
-//                collectionMenu();
-//                break;
-//            case "Shop menu" :
-//                shopMenu();
-//                break;
-//            case "LeaderBoard" :
-//                showLeaderBoard() ;
-//                break;
-//        }
-//    }
 
 
     public void loginMenu(){
+        statusMenu = "Login menu";
         String inputString = scanner.next() ;
         if( inputString.equalsIgnoreCase("Create account")){
             System.out.println("Please enter your username :");
             String username = scanner.next();
             System.out.println("Please enter your password :");
             String password = scanner.next() ;
-            Account.currentAccount = Controller.getNewAccount( username , password ) ;
+            Profile.currentProfile = Controller.getNewProfile( username , password ) ;
             loginMenu();
         }
         else if( inputString.equalsIgnoreCase( "Login")){
-            System.out.println("Please enter your username :");
-            String username = scanner.next() ;
-            System.out.println("Please enter your password :");
-            String password = scanner.next() ;
-            Account.currentAccount = Account.getAccountObj( username , password ) ;
-            if( Account.currentAccount == null )
+            while (true){
+                System.out.println("Please enter your username :");
+                String username = scanner.next() ;
+                System.out.println("Please enter your password :");
+                String password = scanner.next() ;
+                Profile.currentProfile = Profile.getProfileObj( username , password ) ;
+                if( Profile.currentProfile != null )
+                    break;
                 System.out.println("Not found ! please try again ");
-            menuStatus = "Main menu" ;
+            }
+            statusMenu = "Main menu" ;
             mainMenu();
         }
         else if( inputString.equalsIgnoreCase("LeaderBoard") ) {
-            menuStatus = "LeaderBoard" ;
+            statusMenu = "LeaderBoard" ;
             showLeaderBoard();
         }
-        else if( inputString.equalsIgnoreCase("Help"))
+        else if( inputString.equalsIgnoreCase("Help")) {
             printOptions();
+            loginMenu();
+        }
         else if( inputString.equalsIgnoreCase("Exit"))
             System.exit(0);
-        else
+        else {
             System.out.println("Invalid command !");
+            loginMenu();
+        }
     }
 
     public void mainMenu(){
         String inputString = scanner.next() ;
         if( inputString.equalsIgnoreCase("Play")){
-            menuStatus = "Play menu" ;
+            statusMenu = "Play menu" ;
             playMenu();
         }
         else if( inputString.equalsIgnoreCase("Profile")){
-            menuStatus = "Profile menu" ;
+            statusMenu = "Profile menu" ;
             profileMenu();
         }
         else if( inputString.equalsIgnoreCase("Shop")){
-            menuStatus = "Shop menu" ;
+            statusMenu = "Shop menu" ;
             shopMenu();
         }
-        else if( inputString.equalsIgnoreCase( "Help"))
+        else if( inputString.equalsIgnoreCase( "Help")) {
             printOptions();
-        else if( inputString.equalsIgnoreCase("Exit"))
-            menuStatus = "Login menu" ;
-        else
-            System.out.println("Invalid command !");
+            mainMenu();
+        }
+        else if( inputString.equalsIgnoreCase("Exit")) {
+            statusMenu = "Login menu";
+            loginMenu();
+        }
+        else {
+            System.out.println("Invalid command!");
+            mainMenu();
+        }
     }
 
     public void profileMenu(){
@@ -102,16 +87,19 @@ public class View {
         if( inputString.equalsIgnoreCase( "Change")){
             String username = scanner.next() ;
             String password = scanner.next() ;
-            Profile.currentProfile = Account.currentAccount.getProfileObj(username,password) ;
+            Profile.currentProfile = Profile.currentProfile.getProfileObj(username,password) ;
+            profileMenu();
         }
         else if( inputString.equalsIgnoreCase( "Delete")){
             String username = scanner.next() ;
             String password = scanner.next() ;
-            Account.currentAccount.getProfiles().remove( Account.currentAccount.getProfileObj(username,password)) ;
+            Profile.getAllProfiles().remove( Profile.currentProfile.getProfileObj(username,password)) ;
+            profileMenu();
         }
         else if( inputString.equalsIgnoreCase( "Rename")){
             String username = scanner.next() ;
             Profile.currentProfile.setUsername( username );
+            profileMenu();
         }
         else if( inputString.equalsIgnoreCase("Create")){
             String username = scanner.next() ;
@@ -121,32 +109,45 @@ public class View {
                 username = scanner.next();
             }
             String password = scanner.next() ;
-            Profile.currentProfile = Controller.getNewProfile( username , password , Account.currentAccount ) ;
+            Profile.currentProfile = Controller.getNewProfile( username , password ) ;
+            profileMenu();
         }
-        else if( inputString.equalsIgnoreCase( "Show"))
-            System.out.println( Profile.currentProfile.getUsername() );
-        else if( inputString.equalsIgnoreCase("Help"))
+        else if( inputString.equalsIgnoreCase( "Show")) {
+            System.out.println(Profile.currentProfile.getUsername());
+            profileMenu();
+        }
+        else if( inputString.equalsIgnoreCase("Help")) {
             printOptions();
-        else if( inputString.equalsIgnoreCase( "Exit"))
-            menuStatus = "Main menu" ;
-        else
+            profileMenu();
+        }
+        else if( inputString.equalsIgnoreCase( "Exit")) {
+            statusMenu = "Main menu";
+            mainMenu();
+        }
+        else {
             System.out.println("Invalid command !");
+            profileMenu();
+        }
     }
 
     public void playMenu(){
         String inputString =scanner.next() ;
         if( inputString.equalsIgnoreCase("Day")){
+            statusMenu = "Collection menu";
             gameType = "Day" ;
             collectionMenu("plant" , Profile.currentProfile );
         }
         else if( inputString.equalsIgnoreCase( "Water")){
+            statusMenu = "Collection menu";
             gameType = "Water" ;
             collectionMenu("plant" , Profile.currentProfile);
         }
         else if( inputString.equalsIgnoreCase( "Rail")){
+            gameType = "Rail" ;
 
         }
         else if( inputString.equalsIgnoreCase( "Zombie")){
+            statusMenu = "Collection menu";
             gameType = "Zombie" ;
             collectionMenu("zombie" , Profile.currentProfile);
         }
@@ -154,76 +155,124 @@ public class View {
             String opponentUsername = scanner.next() ;
             Profile opponent = Profile.getProfileObj( opponentUsername ) ;
             int numberOfWaves = scanner.nextInt() ;
+            statusMenu = "Collection menu" ;
+            gameType = "PvP" ;
             collectionMenu( "plant" , Profile.currentProfile);
             collectionMenu( "zombie" , opponent );
         }
-        else if( inputString.equalsIgnoreCase( "Help"))
+        else if( inputString.equalsIgnoreCase( "Help")) {
             printOptions();
-        else if( inputString.equalsIgnoreCase( "Exit"))
-            menuStatus = "Main menu" ;
-        else
+            playMenu();
+        }
+        else if( inputString.equalsIgnoreCase( "Exit")) {
+            statusMenu = "Main menu";
+            mainMenu();
+        }
+        else {
             System.out.println("Invalid command!");
+            playMenu();
+        }
     }
 
     public void collectionMenu(String type , Profile profile){
         String inputString = scanner.next() ;
         if( inputString.equalsIgnoreCase( "Show hand")){
             if( type.equals("plant"))
-                Controller.printArrayList( profile.getPlantCollection());
+                Controller.printArrayList( profile.getCollection().getPlantsCollection());
             else
-                Controller.printArrayList( profile.getZombieCollection());
+                Controller.printArrayList( profile.getCollection().getZombieCollection());
         }
         else if( inputString.equalsIgnoreCase( "Show collection")){
             if( type.equals("plant") )
                 profile.printUnSelectedCards("plant");
             else
                 profile.printUnSelectedCards("zombie");
+            collectionMenu( type , profile);
         }
         else if( inputString.matches("Select \\w")) {
             String[] splitInput = inputString.split(" ");
             String cardName =splitInput[1] ;
             Profile.currentProfile.selectCard( type , cardName );
+            collectionMenu( type , profile);
         }
         else if( inputString.matches( "Remove \\w")){
             String[] splitString = inputString.split( " ");
             String cardName = splitString[1] ;
             Profile.currentProfile.removeCard( type , cardName );
+            collectionMenu( type , profile );
         }
         else if( inputString.equalsIgnoreCase("Play"))
             Game.playGame();
-        else if( inputString.equalsIgnoreCase("Help"))
+        else if( inputString.equalsIgnoreCase("Help")) {
             printOptions();
-        else if( inputString.equalsIgnoreCase("Exit"))
-            menuStatus = "Play menu" ;
-        else
+            collectionMenu( type , profile );
+        }
+        else if( inputString.equalsIgnoreCase("Exit")) {
+            statusMenu = "Play menu";
+            playMenu();
+        }
+        else {
             System.out.println("Invalid command!");
+            collectionMenu(type, profile);
+        }
     }
 
     public void shopMenu(){
         String inputString = scanner.next() ;
-        if( inputString.equalsIgnoreCase("Show shop") )
+        if( inputString.equalsIgnoreCase("Show shop") ) {
             Profile.currentProfile.printShopCards();
+            shopMenu();
+        }
         else if( inputString.equalsIgnoreCase("Show collection ")){
             Controller.printArrayList( Profile.currentProfile.getBoughtCards() );
+            shopMenu();
         }
         else if( inputString.matches("Buy \\w")){
             String[] splitString = inputString.split(" ");
             String cardName = splitString[1] ;
             Profile.currentProfile.buyCard( cardName );
+            shopMenu();
         }
-        else if( inputString.equalsIgnoreCase("Money"))
-            System.out.println( Profile.currentProfile.getUsername()+"'s coins: "+Profile.currentProfile.getCoins());
-        else if( inputString.equalsIgnoreCase("Help"))
+        else if( inputString.equalsIgnoreCase("Money")) {
+            System.out.println(Profile.currentProfile.getUsername() + "'s coins: " + Profile.currentProfile.getCoins());
+            shopMenu();
+        }
+        else if( inputString.equalsIgnoreCase("Help")) {
             printOptions();
-        else if( inputString.equalsIgnoreCase("Exit"))
-            menuStatus = "Main menu" ;
-        else
+            shopMenu();
+        }
+        else if( inputString.equalsIgnoreCase("Exit")) {
+            statusMenu = "Main menu";
+            mainMenu();
+        }
+        else {
             System.out.println("Invalid command!");
+            shopMenu();
+        }
 
     }
 
     public void showLeaderBoard(){
+        Collections.sort( Profile.getAllProfiles() , new ProfileComparator());
+        System.out.println("LeaderBoard:");
+        for ( Profile profile : Profile.getAllProfiles()) {
+            System.out.printf( "%d- %s --> record: %d\n" ,
+                    (Profile.getAllProfiles().indexOf(profile)+1) , profile.getUsername() , profile.getRecord());
+        }
         String inputString = scanner.next() ;
+        if( inputString.equalsIgnoreCase("Exit")){
+            statusMenu = "Login menu" ;
+            loginMenu();
+        }
+        else if( inputString.equalsIgnoreCase("Help")) {
+            System.out.println("Exit");
+            showLeaderBoard();
+        }
+        else{
+            System.out.println("Invalid command!");
+            showLeaderBoard();
+        }
+
     }
 
     public void printOptions(){
@@ -235,7 +284,7 @@ public class View {
         String[] shopMenuOption = { "Show shop" , "Show collection" , "Buy" , "Money" } ;
 
         List <String> options ;
-        switch ( menuStatus ){
+        switch ( statusMenu ){
             case "Login menu" :
                 options = Arrays.asList( loginMenuOptions ) ;
                 break;

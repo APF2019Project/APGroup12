@@ -2,8 +2,7 @@ package Models;
 
 import java.util.ArrayList;
 
-public class Map
-{
+public class Map {
     private ArrayList<Cell> cells = new ArrayList<Cell>();
 
     Map(String type)

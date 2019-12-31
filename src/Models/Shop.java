@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 
 public abstract class Shop {
-    private ArrayList<Plant> shopPlants = new ArrayList<>() ;
-    private ArrayList<Zombie> shopZombies = new ArrayList<>() ;
+    private ArrayList<Card> shopPlants = new ArrayList<>() ;
+    private ArrayList<Card> shopZombies = new ArrayList<>() ;
 
 
-    public ArrayList<Plant> getShopPlants() { return shopPlants; }
-    public ArrayList<Zombie> getShopZombies() { return shopZombies; }
+    public ArrayList<Card> getShopPlants() { return shopPlants; }
+    public ArrayList<Card> getShopZombies() { return shopZombies; }
 }

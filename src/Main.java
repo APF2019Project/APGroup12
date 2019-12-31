@@ -1,7 +1,15 @@
-import View.View;
+
+import Controller.Controller;
+import Models.JSONHandler;
+
+
 
 public class Main {
     public static void main(String[] args) {
-        View.gameHandle();
+        JSONHandler.createObjects();
+
+
+        Controller ctrl = new Controller() ;
+        ctrl.gameHandle();
     }
 }
