@@ -1,0 +1,41 @@
+{
+  "@type": "Models.Plant",
+  "@val": {
+    "requiredSuns": 0,
+    "cactus": false,
+    "powers": [
+      {
+        "peaShooter": false,
+        "snowPea": false,
+        "cabbagePult": false,
+        "repeater": false,
+        "threepeater": false,
+        "cactus": false,
+        "gatlingPea": false,
+        "scaredyShroom": false,
+        "kernelPult": false,
+        "splitPea": false,
+        "ExplodeNut": false,
+        "melonPult": false,
+        "lilyPad": true,
+        "winterMelon": false,
+        "wallNut": false,
+        "tangleKelp": false,
+        "tallNut": false,
+        "cattail": false,
+        "potatoMin": false,
+        "cherryBomb": false,
+        "magnetShroom": false,
+        "sunFlower": false,
+        "twinSunflower": false,
+        "jalapeno": false
+      }
+    ],
+    "type": "plant",
+    "name": "Lily Pad",
+    "price": 1,
+    "coolDownTime": 1,
+    "health": 1,
+    "currentCoolDownTime": 0
+  }
+}

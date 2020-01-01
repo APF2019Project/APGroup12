@@ -1,0 +1,30 @@
+{
+  "@type": "Models.Zombie",
+  "@val": {
+    "speed": 3,
+    "passedTurnsAfterUse": 0,
+    "powers": [
+      {
+        "footballer": true,
+        "bucketHead": false,
+        "strongCar": false,
+        "weakCar": false,
+        "bungee": false,
+        "balloon": false,
+        "newspaper": false,
+        "target": false,
+        "screenDoor": false,
+        "gigaGargantuar": false,
+        "pogo": false,
+        "snorkel": false,
+        "dolphinRider": false
+      }
+    ],
+    "type": "zombie",
+    "name": "Football Zombie",
+    "price": 160,
+    "coolDownTime": 0,
+    "health": 4,
+    "currentCoolDownTime": 0
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "@type": "Models.Plant",
+  "@val": {
+    "requiredSuns": 4,
+    "cactus": false,
+    "powers": [
+      {
+        "peaShooter": false,
+        "snowPea": false,
+        "cabbagePult": false,
+        "repeater": false,
+        "threepeater": false,
+        "cactus": false,
+        "gatlingPea": false,
+        "scaredyShroom": false,
+        "kernelPult": false,
+        "splitPea": false,
+        "ExplodeNut": false,
+        "melonPult": false,
+        "lilyPad": false,
+        "winterMelon": false,
+        "wallNut": false,
+        "tangleKelp": false,
+        "tallNut": true,
+        "cattail": false,
+        "potatoMin": false,
+        "cherryBomb": false,
+        "magnetShroom": false,
+        "sunFlower": false,
+        "twinSunflower": false,
+        "jalapeno": false
+      }
+    ],
+    "type": "plant",
+    "name": "Tall-nut",
+    "price": 145,
+    "coolDownTime": 6,
+    "health": 6,
+    "currentCoolDownTime": 0
+  }
+}

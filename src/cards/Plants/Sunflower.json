@@ -1,0 +1,41 @@
+{
+  "@type": "Models.Plant",
+  "@val": {
+    "requiredSuns": 1,
+    "cactus": false,
+    "powers": [
+      {
+        "peaShooter": false,
+        "snowPea": false,
+        "cabbagePult": false,
+        "repeater": false,
+        "threepeater": false,
+        "cactus": false,
+        "gatlingPea": false,
+        "scaredyShroom": false,
+        "kernelPult": false,
+        "splitPea": false,
+        "ExplodeNut": false,
+        "melonPult": false,
+        "lilyPad": false,
+        "winterMelon": false,
+        "wallNut": false,
+        "tangleKelp": false,
+        "tallNut": false,
+        "cattail": false,
+        "potatoMin": false,
+        "cherryBomb": false,
+        "magnetShroom": false,
+        "sunFlower": true,
+        "twinSunflower": false,
+        "jalapeno": false
+      }
+    ],
+    "type": "plant",
+    "name": "Sunflower",
+    "price": 5,
+    "coolDownTime": 2,
+    "health": 2,
+    "currentCoolDownTime": 0
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "@type": "Models.Zombie",
+  "@val": {
+    "speed": 2,
+    "passedTurnsAfterUse": 0,
+    "powers": [
+      {
+        "footballer": false,
+        "bucketHead": true,
+        "strongCar": false,
+        "weakCar": false,
+        "bungee": false,
+        "balloon": false,
+        "newspaper": false,
+        "target": false,
+        "screenDoor": false,
+        "gigaGargantuar": false,
+        "pogo": false,
+        "snorkel": false,
+        "dolphinRider": false
+      }
+    ],
+    "type": "zombie",
+    "name": "Buckethead Zombie",
+    "price": 90,
+    "coolDownTime": 0,
+    "health": 3,
+    "currentCoolDownTime": 0
+  }
+}

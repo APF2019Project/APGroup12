@@ -1,0 +1,41 @@
+{
+  "@type": "Models.Plant",
+  "@val": {
+    "requiredSuns": 5,
+    "cactus": false,
+    "powers": [
+      {
+        "peaShooter": false,
+        "snowPea": false,
+        "cabbagePult": false,
+        "repeater": false,
+        "threepeater": false,
+        "cactus": false,
+        "gatlingPea": false,
+        "scaredyShroom": false,
+        "kernelPult": false,
+        "splitPea": false,
+        "ExplodeNut": false,
+        "melonPult": false,
+        "lilyPad": false,
+        "winterMelon": false,
+        "wallNut": false,
+        "tangleKelp": false,
+        "tallNut": false,
+        "cattail": true,
+        "potatoMin": false,
+        "cherryBomb": false,
+        "magnetShroom": false,
+        "sunFlower": false,
+        "twinSunflower": false,
+        "jalapeno": false
+      }
+    ],
+    "type": "plant",
+    "name": "Cattail",
+    "price": 76,
+    "coolDownTime": 5,
+    "health": 3,
+    "currentCoolDownTime": 0
+  }
+}

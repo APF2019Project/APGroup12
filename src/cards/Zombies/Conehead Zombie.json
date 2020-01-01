@@ -1,0 +1,14 @@
+{
+  "@type": "Models.Zombie",
+  "@val": {
+    "speed": 2,
+    "passedTurnsAfterUse": 0,
+    "powers": [],
+    "type": "zombie",
+    "name": "Conehead Zombie",
+    "price": 90,
+    "coolDownTime": 0,
+    "health": 3,
+    "currentCoolDownTime": 0
+  }
+}

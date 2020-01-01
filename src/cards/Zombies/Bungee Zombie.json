@@ -1,0 +1,30 @@
+{
+  "@type": "Models.Zombie",
+  "@val": {
+    "speed": 0,
+    "passedTurnsAfterUse": 0,
+    "powers": [
+      {
+        "footballer": false,
+        "bucketHead": false,
+        "strongCar": false,
+        "weakCar": false,
+        "bungee": true,
+        "balloon": false,
+        "newspaper": false,
+        "target": false,
+        "screenDoor": false,
+        "gigaGargantuar": false,
+        "pogo": false,
+        "snorkel": false,
+        "dolphinRider": false
+      }
+    ],
+    "type": "zombie",
+    "name": "Bungee Zombie",
+    "price": 30,
+    "coolDownTime": 0,
+    "health": 3,
+    "currentCoolDownTime": 0
+  }
+}
