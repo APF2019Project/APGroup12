@@ -1,17 +1,24 @@
 package Models;
 
+import java.util.ArrayList;
+
 public class Cell {
     private Map map;
     private int x, y;
     private String type;
-    private Card asset;
+    private Plant plantAsset = null;
+    private ArrayList<Zombie> zombieAsset = new ArrayList<Zombie>();
 
     public Cell(Map map, int x, int y, String type) {
         this.map = map;
         this.x = x;
         this.y = y;
         this.type = type;
-        asset = null;
+    }
+
+    public Cell copy()
+    {
+        return new Cell(this.map , this.x , this.y , this.type);
     }
 
     private static double getDist(Cell a , Cell b)
@@ -20,19 +27,25 @@ public class Cell {
         return Math.sqrt(x * x + y * y);
     }
 
-    public void insertCard(Card card) {
-        asset = card;
+    public void insertCard(Plant card) {
+        plantAsset = card;
+        card.setCoordination(this);
+    }
+
+    public void insertCard(Zombie card) {
+        zombieAsset.add(card);
+        card.setCoordination(this);
     }
 
     public void clear() {
-        asset = null;
+        plantAsset = null;
+    }
+    public void clear(Zombie zombie)
+    {
+        zombieAsset.remove(zombie);
     }
 
     public boolean checkValidity(Card card) {
-        if (!card.getType().equals(type)) {
-            return false;
-        }
-
         if (card instanceof Plant) {
             if (y % 2 == 1)
             {
@@ -40,36 +53,63 @@ public class Cell {
             }
 
             if (type.equals("Water")) {
-                return asset != null && asset.getName().equals("Lily Pad");
+                if (card.getType().equals("Water"))
+                {
+                    return plantAsset == null;
+                }
+                else
+                {
+                    return plantAsset != null && plantAsset.getName().equals("Lily Pad");
+                }
             } else {
-                return asset == null;
+                return plantAsset == null;
             }
         }
-
-        return asset == null;
+        else
+        {
+            return plantAsset == null && ((Zombie) card).type.equals(type);
+        }
     }
 
     public void show()
     {
-        if (asset != null)
+        if (plantAsset != null)
         {
-            asset.show();
+            plantAsset.show();
+        }
+
+        for (Zombie zombie : zombieAsset)
+        {
+            zombie.show();
         }
     }
 
     public void endTurn()
     {
-        if (asset != null)
+        if (plantAsset != null)
         {
-            asset.doYourJob();
+            plantAsset.doYourJob();
         }
-    }
 
-    public void explode()
-    {
-        if (asset instanceof Zombie)
+        ArrayList<Zombie> tmp = new ArrayList<Zombie>();
+
+        while (zombieAsset.size() > 0)
         {
-            asset = null;
+            Zombie zombie = zombieAsset.get(0);
+            zombie.doYourJob();
+
+            if (zombieAsset.contains(zombie))
+            {
+                tmp.add(zombie);
+                zombieAsset.remove(zombie);
+            }
+        }
+
+        while (tmp.size() > 0)
+        {
+            Zombie zombie = tmp.get(0);
+            zombieAsset.add(zombie);
+            tmp.remove(zombie);
         }
     }
 
@@ -121,8 +161,56 @@ public class Cell {
         return res;
     }
 
+    public void killPlant()
+    {
+        plantAsset = null;
+        map.plantDown();
+    }
+
+    public void killZombie(Zombie zombie)
+    {
+        zombieAsset.remove(zombie);
+        map.zombieDown();
+    }
+
+    public void explode()
+    {
+        while (zombieAsset.size() > 0)
+        {
+            Zombie zombie = zombieAsset.get(0);
+            this.killZombie(zombie);
+        }
+    }
+
     public boolean getAbsorbed()
     {
+        for (Zombie zombie : zombieAsset)
+        {
+            if (zombie.getPowers().isPogo())
+            {
+                zombie.getPowers().setPogo(false);
+                return true;
+            }
+
+            if (zombie.getPowers().isScreenDoor())
+            {
+                zombie.getPowers().setScreenDoor(false);
+                zombie.setShield(0);
+                return true;
+            }
+
+            if (zombie.getPowers().isBucketHead())
+            {
+                if (zombie.getHealth() > 1)
+                {
+                    zombie.getHit(new Pea(1 , true , new Effect()));
+                }
+
+                zombie.getPowers().setBucketHead(false);
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -142,7 +230,18 @@ public class Cell {
         return type;
     }
 
-    public Card getAsset() {
-        return asset;
+    public Card getAsset()
+    {
+        if (plantAsset != null)
+        {
+            return plantAsset;
+        }
+
+        if (zombieAsset.size() > 0)
+        {
+            return zombieAsset.get(0);
+        }
+
+        return null;
     }
 }

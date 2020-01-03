@@ -1,34 +1,34 @@
 package Models;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Card {
     protected Cell coordination;
     protected String type;
     protected String name ;
     protected int price ;
-    protected int coolDownTime ;
     protected int health ;
-    protected int currentCoolDownTime ;
     private  static ArrayList<Card> allCards = new ArrayList<>() ;
 
-    protected Card(String name, String type, int health, int coolDownTime, Cell coordination)
+    protected Card(String name, String type, int health, Cell coordination)
     {
         this.name = name;
         this.type = type;
         this.health = health;
-        this.coolDownTime = coolDownTime;
         this.coordination = coordination;
-        this.currentCoolDownTime = 0;
     }
 
-    public Card(String type , String name, int health) {
-        this.name = name;
-        this.type = type;
-        this.health = health;
+    public Card copy()
+    {
+        return new Card(this.name , this.type , this.health , this.coordination);
     }
 
-    public Card() {
+    public static Card getRandomCard(Collection hand)
+    {
+        Random random = new Random();
+        int pos = random.nextInt(hand.getSize()) + 1;
+        return hand.getCard(pos);
     }
 
     public static Card getCardObj (String name ){
@@ -41,18 +41,20 @@ public class Card {
 
     public void show()
     {
-
+        System.out.println(name + " " + health + " " + coordination.getX() + " " + coordination.getY());
     }
 
     public void doYourJob()
     {
-        currentCoolDownTime--;
+
     }
-    public boolean inCoolDown() {
-        return currentCoolDownTime == 0;
-    }
+
     public Cell getCoordination() {
         return coordination;
+    }
+    public void setCoordination(Cell coordination)
+    {
+        this.coordination = coordination;
     }
     public String getName() {
         return name;
@@ -60,14 +62,8 @@ public class Card {
     public String getType() {
         return type;
     }
-    public int getCoolDownTime() {
-        return coolDownTime;
-    }
     public int getHealth() {
         return health;
-    }
-    public int getCurrentCoolDownTime() {
-        return currentCoolDownTime;
     }
     public void setHealth(int health) { this.health = health; }
     public int getPrice() { return price; }

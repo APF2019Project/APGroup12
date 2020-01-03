@@ -2,12 +2,62 @@ package Models;
 
 import java.util.ArrayList;
 
-public class Collection {
-   private ArrayList<Card> plantsCollection = new ArrayList<>();
-   private ArrayList<Card> zombieCollection = new ArrayList<>() ;
+public class Collection
+{
+    private ArrayList<Card> list = new ArrayList<Card>();
 
+    public Collection() {
 
-    public ArrayList<Card> getPlantsCollection() { return plantsCollection; }
-    public ArrayList<Card> getZombieCollection() { return zombieCollection; }
+    }
+    public Collection(ArrayList<Card> list) {
+        this.list.addAll(list);
+    }
 
+    void show()
+    {
+        for (Card card : list)
+        {
+            System.out.print(card.getName() + " ");
+        }
+
+        System.out.println();
+    }
+
+    int getSize()
+    {
+        return list.size();
+    }
+
+    void add (Card card)
+    {
+        list.add(card);
+    }
+
+    void remove(Card card)
+    {
+        list.remove(card);
+    }
+
+    Card getCard(String name)
+    {
+        for (Card card : list)
+        {
+            if (card.getName().equals(name))
+            {
+                return card;
+            }
+        }
+
+        return null;
+    }
+
+    Card getCard(int position)
+    {
+        if (position > list.size())
+        {
+            return null;
+        }
+
+        return list.get(position - 1);
+    }
 }

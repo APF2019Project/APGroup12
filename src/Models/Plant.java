@@ -1,157 +1,202 @@
 package Models;
 
-
-import java.util.ArrayList;
-
-public class Plant extends Card {
-
-    private int requiredSuns;
-    private boolean cactus;
-    private ArrayList<PlantPower> powers = new ArrayList<>() ;
-    private static ArrayList<Plant> allPlants = new ArrayList<>() ;
-
+public class Plant extends Card
+{
+    protected int requiredSuns;
+    protected int coolDownTime ;
+    protected int currentCoolDownTime = 0;
+    protected boolean cactus;
+    private static Collection allPlants = new Collection();
 
     protected Plant(String name, String type, int health, int coolDownTime, int requiredSuns, boolean cactus,
                     Cell coordination)
     {
-        super(name , type , health , coolDownTime , coordination);
+        super(name , type , health , coordination);
+        this.coolDownTime = coolDownTime;
         this.requiredSuns = requiredSuns;
         this.cactus = cactus;
-    }
-
-    public Plant(String type , String name , int health, int coolDownTime, int requiredSuns) {
-        super( type , name , health  );
-        this.coolDownTime = coolDownTime ;
-        this.requiredSuns = requiredSuns;
         this.price = ( this.requiredSuns * this.coolDownTime * this.health + 1 ) ;
     }
 
-    public static void putPeashooter(Cell coordination)
+    @Override
+    public Plant copy()
     {
-
+        return new Plant(this.name , this.type , this.health , this.coolDownTime , this.requiredSuns ,
+                this.cactus , null);
     }
 
-    public static void putSnowPea(Cell coordination)
+    public static boolean putPlant(Plant plant, Cell coordination)
     {
+        if (coordination.checkValidity(plant)) {
+            plant.currentCoolDownTime = plant.coolDownTime;
+            coordination.insertCard(plant.copy());
+            return true;
+        }
 
+        return false;
     }
 
-    public static void putCabbagepult(Cell coordination)
+    public static Plant getPeashooter()
     {
-
+        return AttackerPlant.getPeashooter();
     }
 
-    public static void putRepeater(Cell coordination)
+    public static Plant getSnowPea()
     {
-
+        return AttackerPlant.getSnowPea();
     }
 
-    public static void putThreepeater(Cell coordination)
+    public static Plant getCabbagepult()
     {
-
+        return AttackerPlant.getCabbagepult();
     }
 
-    public static void putCactus(Cell coordination)
+    public static Plant getRepeater()
     {
-
+        return AttackerPlant.getRepeater();
     }
 
-    public static void putGatlingPea(Cell coordination)
+    public static Plant getThreepeater()
     {
+        return AttackerPlant.getThreepeater();
     }
 
-    public static void putScardyShroom(Cell coordination)
+    public static Plant getCactus()
     {
-
+        return AttackerPlant.getCactus();
     }
 
-    public static void putKernelpult(Cell coordination)
+    public static Plant getGatlingPea()
     {
-
+        return AttackerPlant.getGatlingPea();
     }
 
-    public static void putSplitPea(Cell coordination)
+    public static Plant getScardyShroom()
     {
-
+        return AttackerPlant.getScardyshroom();
     }
 
-    public static void putExplodeonut(Cell coordination)
+    public static Plant getKernelpult()
     {
-        coordination.insertCard(new Plant("Explode-o-nut" , "Land" , 3 , 5 ,
-                4 , true ,  coordination));
+        return AttackerPlant.getKernelpult();
     }
 
-    public static void putMelonpult(Cell coordination)
+    public static Plant getSplitPea()
     {
-
+        return AttackerPlant.getSplitPea();
     }
 
-    public static void putLilyPad(Cell coordination)
+    public static Plant getExplodeonut()
     {
-        coordination.insertCard(new Plant("Lily Pad" , "Water" , 1 , 1 ,
-                0 , false ,  coordination));
+        return new Plant("Explode-o-nut" , "Land" , 3 , 5 , 4 , true ,
+                null);
     }
 
-    public static void putWinterMelon(Cell coordination)
+    public static Plant getMelonpult()
     {
-
+        return AttackerPlant.getMelonpult();
     }
 
-    public static void putWallnut(Cell coordination)
+    public static Plant getLilyPad()
     {
-        coordination.insertCard(new Plant("Wall-nut" , "Land" , 4 , 4 ,
-                2 , false ,  coordination));
+        return new Plant("Lily Pad" , "Water" , 1 , 1 , 0 , false ,
+                null);
     }
 
-    public static void putTangleKelp(Cell coordination)
+    public static Plant getWinterMelon()
     {
-
+        return AttackerPlant.getWinterMelon();
     }
 
-    public static void putTallnut(Cell coordination)
+    public static Plant getWallnut()
     {
-        coordination.insertCard(new Plant("Tall-nut" , "Land" , 6 , 6 ,
-                4 , false ,  coordination));
+        return new Plant("Wall-nut" , "Land" , 4 , 4 , 2 , false ,
+                null);
     }
 
-    public static void putCattail(Cell coordination)
+    public static Plant getTangleKelp()
     {
-
+        return ExplosivePlant.getTangleKelp();
     }
 
-    public static void putPotatoMine(Cell coordination)
+    public static Plant getTallnut()
     {
-
+        return new Plant("Tall-nut" , "Land" , 6 , 6 , 4 , false ,
+                null);
     }
 
-    public static void putCherryBomb(Cell coordination)
+    public static Plant getCattail()
     {
-
+        return AttackerPlant.getCattail();
     }
 
-    public static void putMagnetshroom(Cell coordination)
+    public static Plant getPotatoMine()
     {
-
+        return ExplosivePlant.getPotatoMine();
     }
 
-    public static void putSunflower(Cell coordination)
-    {
+    public static Plant getCherryBomb() { return ExplosivePlant.getCherryBomb(); }
 
+    public static Plant getMagnetshroom()
+    {
+        return Magnetshroom.getMagnetshroom();
     }
 
-    public static void putTwinSunflower(Cell coordination)
+    public static Plant getSunflower()
     {
-
+        return Sunflower.getSunflower();
     }
 
-    public static void putJalapeno(Cell coordination)
+    public static Plant getTwinSunflower()
     {
+        return Sunflower.getTwinSunflower();
+    }
 
+    public static Plant getJalapeno()
+    {
+        return ExplosivePlant.getJalapeno();
+    }
+
+    public void getEaten(Zombie zombie)
+    {
+        if (this instanceof ExplosivePlant)
+        {
+            if (name.equals("Potato Mine") || name.equals("Tangle Kelp"))
+            {
+                if (((ExplosivePlant) this).getDelay() == 0)
+                {
+                    zombie.getDestroyed();
+                    this.getDestroyed();
+                }
+            }
+        }
+
+        if (cactus)
+        {
+            zombie.getHit(new Pea(1 , true , new Effect()));
+        }
+
+        health--;
+
+        if (health == 0)
+        {
+            coordination.killPlant();
+        }
+    }
+
+    public void getDestroyed()
+    {
+        coordination.killPlant();
     }
 
     @Override
     public void doYourJob()
     {
+        if (currentCoolDownTime > 0)
+        {
+            currentCoolDownTime--;
+        }
+
         super.doYourJob();
     }
 
@@ -163,23 +208,19 @@ public class Plant extends Card {
         return requiredSuns;
     }
 
-
-
-    public void setRequiredSuns(int requiredSuns) {
-        this.requiredSuns = requiredSuns;
+    public boolean ready() {
+        return currentCoolDownTime == 0;
     }
 
-    public void setCactus(boolean cactus) {
-        this.cactus = cactus;
+    public int getCurrentCoolDownTime() {
+        return currentCoolDownTime;
     }
 
-    public ArrayList<PlantPower> getPowers() {
-        return powers;
+    public int getCoolDownTime() {
+        return coolDownTime;
     }
 
-    public void setPowers(ArrayList<PlantPower> allPowers) {
-        this.powers = allPowers;
+    public static Collection getAllPlants() {
+        return allPlants;
     }
-
-    public static ArrayList<Plant> getAllPlants() { return allPlants; }
 }
