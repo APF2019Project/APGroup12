@@ -12,6 +12,7 @@ public class Controller {
     public View view = new View() ;
 
     public static Profile getNewProfile(String username , String password ){
+
         return ( new Profile( username ,  password )) ;
     }
 
@@ -23,7 +24,7 @@ public class Controller {
     public static boolean usernameExists( String username ){
         for (Profile p : Profile.getAllProfiles()) {
             if( p.getUsername().equalsIgnoreCase( username )){
-                System.out.println("This username is already exist! Enter another one ...");
+                System.out.println("This username is already exist! Enter another one:");
                 return true ;
             }
         }

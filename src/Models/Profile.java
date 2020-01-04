@@ -24,13 +24,13 @@ public class Profile {
 
     public void printUnSelectedCards( String type ){
         if( type.equals("plant")) {
-            for (Card card : this.plants )
-                if (! collection.getPlantsCollection().contains(card) )
+            for (Card card : this.plants)
+                if (!this.getCollection().getList().contains(card))
                     System.out.println(card.getName());
         }
-        else{
-            for (Card card : this.zombies)
-                if (! collection.getZombieCollection().contains(card))
+        else {
+            for ( Card card : this.zombies)
+                if ( ! this.getCollection().getList().contains(card))
                     System.out.println(card.getName());
         }
     }
@@ -50,48 +50,31 @@ public class Profile {
     }
 
     public void selectCard( String type , String nameCard ){
-        if( type.equals("plant")) {
-            for ( Card card : this.getPlants() ) {
-                if( card.getName().equalsIgnoreCase( nameCard ) &&
-                        ! this.collection.getPlantsCollection().contains(card) &&
-                         (this.collection.getPlantsCollection().size() < 7 ) ) {
-                    this.collection.getPlantsCollection().add(card);
-                    return;
-                }
-            }
-        }
-        else if( type.equals("zombie")) {
-            for ( Card card : this.getZombies() ) {
-                if( card.getName().equalsIgnoreCase( nameCard ) &&
-                        ! this.collection.getZombieCollection().contains( card) &&
-                        (this.collection.getZombieCollection().size() < 7 )) {
-                    this.collection.getZombieCollection().add(card);
-                    return;
-                }
-            }
-        }
-        if( this.collection.getPlantsCollection().size()==7 || this.collection.getZombieCollection().size()==7){
+        if( this.collection.getList().size() == 7 ) {
             System.out.println("Your collection is full!");
             return;
         }
-    }
-    public void removeCard(String type , String nameCard ){
         if( type.equals("plant")) {
-            for ( Card card : this.getPlants() ) {
-                if( card.getName().equalsIgnoreCase( nameCard) &&
-                        this.collection.getPlantsCollection().contains(card)) {
-                    this.collection.getPlantsCollection().remove(card);
+            for ( Card card : this.getPlants() )
+                if(card.getName().equalsIgnoreCase(nameCard) && (! this.collection.getList().contains(card)) ){
+                    this.collection.getList().add(card);
                     return;
                 }
-            }
         }
-        if( type.equals("zombie")) {
-            for ( Card card : this.getZombies() ) {
-                if( card.getName().equalsIgnoreCase( nameCard ) &&
-                        this.collection.getZombieCollection().contains( card)) {
-                    this.collection.getZombieCollection().remove(card);
+        else if( type.equals("zombie")) {
+            for ( Card card : this.getZombies() )
+                if(card.getName().equalsIgnoreCase(nameCard) && (! this.collection.getList().contains(card)) ){
+                    this.collection.getList().add(card);
                     return;
                 }
+            return;
+        }
+    }
+    public void removeCard( String nameCard ){
+        for ( Card card : this.getCollection().getList()) {
+            if( card.getName().equalsIgnoreCase( nameCard )) {
+                this.getCollection().getList().remove(card);
+                return;
             }
         }
     }
@@ -114,7 +97,7 @@ public class Profile {
              if ( this.shop.getShopPlants().contains(card) || this.shop.getShopZombies().contains( card )) {
                 if (card.getType().equals("plant")) {
                     this.getPlants().add(card);
-                    this.shop.getShopPlants().remove( card );
+                    this.shop.getShopPlants().remove( card ) ;
                 }
                 else {
                     this.getZombies().add(card);

@@ -21,6 +21,11 @@ public class View {
             String username = scanner.nextLine();
             System.out.println("Please enter your password :");
             String password = scanner.nextLine() ;
+            while ( true ){
+                if( ! Controller.usernameExists( username ))
+                    break;
+                username = scanner.nextLine() ;
+            }
             Profile.currentProfile = Controller.getNewProfile( username , password ) ;
             loginMenu();
         }
@@ -147,13 +152,13 @@ public class View {
         String inputString =scanner.nextLine() ;
         if( inputString.equalsIgnoreCase("Day")){
             statusMenu = "Collection menu";
-            gameType = "Day" ;
-            collectionMenu("plant" , Profile.currentProfile );
+            gameType = "plant" ;
+            collectionMenu( gameType , Profile.currentProfile );
         }
         else if( inputString.equalsIgnoreCase( "Water")){
             statusMenu = "Collection menu";
-            gameType = "Water" ;
-            collectionMenu("plant" , Profile.currentProfile);
+            gameType = "plant" ;
+            collectionMenu( gameType , Profile.currentProfile );
         }
         else if( inputString.equalsIgnoreCase( "Rail")){
             gameType = "Rail" ;
@@ -161,16 +166,29 @@ public class View {
         }
         else if( inputString.equalsIgnoreCase( "Zombie")){
             statusMenu = "Collection menu";
-            gameType = "Zombie" ;
-            collectionMenu("zombie" , Profile.currentProfile);
+            gameType = "zombie" ;
+            collectionMenu( gameType , Profile.currentProfile );
         }
         else if( inputString.equalsIgnoreCase( "PvP")){
-            String opponentUsername = scanner.nextLine() ;
-            Profile opponent = Profile.getProfileObj( opponentUsername ) ;
+            System.out.println("Player 2 , Please enter your username:");
+            String username = scanner.nextLine() ;
+            System.out.println("Player 2 , Please enter your password:");
+            String password = scanner.nextLine() ;
+            Profile opponent ;
+            while ( true ) {
+                opponent = Profile.getProfileObj( username , password ) ;
+                if ( opponent != null)
+                    break;
+                System.out.println("Player 2 , Please enter your username:");
+                 username = scanner.nextLine() ;
+                System.out.println("Player 2 , Please enter your password:");
+                password = scanner.nextLine() ;
+            }
+            System.out.println("Please enter number of waves:");
             int numberOfWaves = scanner.nextInt() ;
             statusMenu = "Collection menu" ;
             gameType = "PvP" ;
-            collectionMenu( "plant" , Profile.currentProfile);
+            collectionMenu( "plant" ,  Profile.currentProfile );
             collectionMenu( "zombie" , opponent );
         }
         else if( inputString.equalsIgnoreCase( "Help")) {
@@ -187,38 +205,36 @@ public class View {
         }
     }
 
-    public void collectionMenu(String type , Profile profile){
+    public void collectionMenu( String gameType , Profile profile ){
+        System.out.println( profile.getUsername() + "'s" + " " + "collection:");
         String inputString = scanner.nextLine() ;
         if( inputString.equalsIgnoreCase( "Show hand")){
-            if( type.equals("plant"))
-                Controller.printArrayList( profile.getCollection().getPlantsCollection());
-            else
-                Controller.printArrayList( profile.getCollection().getZombieCollection());
+          Controller.printArrayList( profile.getCollection().getList() );
         }
         else if( inputString.equalsIgnoreCase( "Show collection")){
-            if( type.equals("plant") )
+            if( gameType.equals("plant") )
                 profile.printUnSelectedCards("plant");
             else
                 profile.printUnSelectedCards("zombie");
-            collectionMenu( type , profile);
+            collectionMenu( gameType , profile);
         }
         else if( inputString.matches("Select \\w")) {
             String[] splitInput = inputString.split(" ");
-            String cardName =splitInput[1] ;
-            Profile.currentProfile.selectCard( type , cardName );
-            collectionMenu( type , profile);
+            String cardName = splitInput[1] ;
+            Profile.currentProfile.selectCard( gameType , cardName );
+            collectionMenu( gameType , profile);
         }
         else if( inputString.matches( "Remove \\w")){
             String[] splitString = inputString.split( " ");
             String cardName = splitString[1] ;
-            Profile.currentProfile.removeCard( type , cardName );
-            collectionMenu( type , profile );
+            Profile.currentProfile.removeCard( cardName );
+            collectionMenu( gameType , profile );
         }
         else if( inputString.equalsIgnoreCase("Play"))
-            Game.playGame();
+            Game.playGame();                                           // !!!!!!!!
         else if( inputString.equalsIgnoreCase("Help")) {
             printOptions();
-            collectionMenu( type , profile );
+            collectionMenu( gameType , profile );
         }
         else if( inputString.equalsIgnoreCase("Exit")) {
             statusMenu = "Play menu";
@@ -226,7 +242,7 @@ public class View {
         }
         else {
             System.out.println("Invalid command!");
-            collectionMenu(type, profile);
+            collectionMenu(gameType, profile);
         }
     }
 
