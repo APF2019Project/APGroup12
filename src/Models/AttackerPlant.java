@@ -156,8 +156,6 @@ public class AttackerPlant extends Plant
             return;
         }
 
-        System.out.println(target.health + " :D ");
-
         currentCoolDownForNextShoot = coolDownForNextShoot;
 
         for (int i = 0; i < numberOfBulletsPerShoot; i++)

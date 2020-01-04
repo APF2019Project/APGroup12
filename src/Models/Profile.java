@@ -9,7 +9,7 @@ public class Profile {
     private int sun ;
     private int record ;
     private Shop shop ;
-    private Collection collection ;
+    private Collection collection = new Collection();
     public static Profile currentProfile ;
     private ArrayList<Card> plants = new ArrayList<>() ;         // all user's plants
     private ArrayList<Card> zombies = new ArrayList<>();
@@ -20,6 +20,22 @@ public class Profile {
         this.username = username;
         this.password = password;
         allProfiles.add( this ) ;
+
+        plants.add(Plant.getAllPlants().getCard("Peashooter"));
+        plants.add(Plant.getAllPlants().getCard("Snow Pea"));
+        plants.add(Plant.getAllPlants().getCard("Explode-o-nut"));
+        plants.add(Plant.getAllPlants().getCard("Scaredy-shroom"));
+        plants.add(Plant.getAllPlants().getCard("Cherry Bomb"));
+        plants.add(Plant.getAllPlants().getCard("Kernel-pult"));
+        plants.add(Plant.getAllPlants().getCard("Sunflower"));
+
+        zombies.add(Zombie.getAllZombies().getCard("Zombie"));
+        zombies.add(Zombie.getAllZombies().getCard("Football Zombie"));
+        zombies.add(Zombie.getAllZombies().getCard("Screen Door Zombie"));
+        zombies.add(Zombie.getAllZombies().getCard("Zomboni"));
+        zombies.add(Zombie.getAllZombies().getCard("Balloon Zombie"));
+        zombies.add(Zombie.getAllZombies().getCard("Bungee Zombie"));
+        zombies.add(Zombie.getAllZombies().getCard("Conehead Zombie"));
     }
 
     public void printUnSelectedCards( String type ){
@@ -94,7 +110,7 @@ public class Profile {
         if( card == null )
             System.out.println("Invalid name!");
         else if( this.getCoins() >= card.getPrice()) {
-             if ( this.shop.getShopPlants().contains(card) || this.shop.getShopZombies().contains( card )) {
+            if ( this.shop.getShopPlants().contains(card) || this.shop.getShopZombies().contains( card )) {
                 if (card.getType().equals("plant")) {
                     this.getPlants().add(card);
                     this.shop.getShopPlants().remove( card ) ;
@@ -105,7 +121,7 @@ public class Profile {
                 }
                 this.getBoughtCards().add(card);
                 this.setCoins( this.getCoins() - card.getPrice());
-                 System.out.println("Card bought successfully!");
+                System.out.println("Card bought successfully!");
             }
         }
         else System.out.println("Not enough money!");

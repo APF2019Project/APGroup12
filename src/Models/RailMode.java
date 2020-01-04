@@ -51,10 +51,8 @@ public class RailMode extends Day
     @Override
     public void select(String name)
     {
-        System.out.println("Caaaard is : " + name);
         Plant plant = (Plant)hand.getCard(name);
         checkAndGet(plant);
-        System.out.println("owowow : " + selectedCard.getName());
     }
 
     @Override

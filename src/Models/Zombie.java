@@ -30,7 +30,6 @@ public class Zombie extends Card
 
     public static boolean putZombie(Zombie zombie , Cell coordination)
     {
-        System.out.println(":D " + zombie.getName());
         if (coordination.checkValidity(zombie)) {
             coordination.insertCard(zombie.copy());
             return true;
@@ -189,10 +188,16 @@ public class Zombie extends Card
         coordination.getMap().getByCoordination(x , y - 1).insertCard(this);
     }
 
-    private void partyTime()
+    private void partyTime(int x)
     {
-        coordination.clear(this);
-        coordination.getMap().eatBrain();
+        if (coordination.getMap().getJaroo(x))
+        {
+            coordination.getMap().jarooUp(x);
+        }
+        else {
+            coordination.clear(this);
+            coordination.getMap().eatBrain();
+        }
     }
 
     public void getDestroyed()
@@ -202,6 +207,12 @@ public class Zombie extends Card
 
     public void doYourJob()
     {
+        if (coordination == null)
+        {
+            super.doYourJob();
+            return;
+        }
+
         if (effect.getStunDuration() > 0)
         {
             effect.decreaseSlowDuration();
@@ -218,7 +229,7 @@ public class Zombie extends Card
             int x = coordination.getX(), y = coordination.getY();
 
             if (y == 1) {
-                partyTime();
+                partyTime(x);
                 break;
             } else {
                 if (coordination.getMap().getByCoordination(x, y - 1).getAsset() instanceof Plant) {

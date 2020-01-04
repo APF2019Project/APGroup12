@@ -1,19 +1,27 @@
 package Models;
 
-import java.util.ArrayList;
-
 public class ZombieMode extends Game
 {
     private int coins;
     private boolean pvp;
-    private ArrayList<Zombie>[] wave = new ArrayList[10];
-    private ArrayList<Zombie>[] currentWave = (ArrayList<Zombie>[])new Object[10];
+    private Zombie[][] wave = new Zombie[10][10];
+    private int[] last = new int[10];
 
     private ZombieMode(Map map , Collection plantHand , Collection zombieHand , boolean pvp)
     {
         super(map , plantHand , zombieHand);
         this.pvp = pvp;
         coins = 50;
+
+        for (int i = 0; i < 10; i++)
+        {
+            wave[i] = new Zombie[10];
+        }
+
+        if (!pvp)
+        {
+            map.randomize(plantHand);
+        }
     }
 
     public static ZombieMode createZombieMode(Map map , Collection plantHand , Collection zombieHand , boolean pvp)
@@ -47,9 +55,9 @@ public class ZombieMode extends Game
         {
             System.out.print("#" + i + " : ");
 
-            for (Zombie zombie : wave[i])
+            for (int j = 0; j < last[i]; j++)
             {
-                System.out.print(zombie.getName() + " ");
+                System.out.print(wave[i][j].getName() + " ");
             }
 
             System.out.println();
@@ -72,7 +80,7 @@ public class ZombieMode extends Game
             return false;
         }
 
-        if (cnt + currentWave[row].size() > 2)
+        if (cnt + last[row] > 2)
         {
             invalidWave();
             return false;
@@ -81,37 +89,48 @@ public class ZombieMode extends Game
         for (int i = 0; i < cnt; i++)
         {
             coins -= zombie.getRequiredCoins();
-            currentWave[row].add(zombie);
+            wave[row][last[row]] = ((Zombie) zombieHand.getCard(name));
+            last[row]++;
         }
 
         return true;
+    }
+
+    private boolean put(Zombie zombie , int row)
+    {
+        for (int i = 1; i <= 2; i++)
+        {
+            if (map.getByCoordination(row , 19 + i).getAsset() == null &&
+                    Zombie.putZombie(zombie.copy(), map.getByCoordination(row, 19 + i))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void start()
     {
         for (int i = 1; i <= 6; i++)
         {
-            wave[i].addAll(wave[i].size() , currentWave[i]);
-            currentWave[i].clear();
+            for (int j = 0; j < last[i]; j++)
+            {
+                put(wave[i][j] , i);
+                wave[i][j] = null;
+            }
+
+            last[i] = 0;
         }
     }
 
     public boolean hasWaveEnded()
     {
-        if (map.hasRemainingZombie())
-        {
-            return false;
-        }
+        return (!map.hasRemainingZombie());
+    }
 
-        for (int i = 1; i <= 6; i++)
-        {
-            if (wave[i].size() > 0)
-            {
-                return false;
-            }
-        }
-
-        return true;
+    public int getCoins()
+    {
+        return coins;
     }
 
     public void getCoin(int value)
@@ -122,26 +141,16 @@ public class ZombieMode extends Game
     @Override
     public void endTurn()
     {
-        for (int i = 1; i <= 6; i++)
+        if (!pvp)
         {
-            if (wave[i].size() > 0)
-            {
-                Cell coordination = map.getByCoordination(i , 19);
-                Zombie.putZombie(wave[i].get(0) , coordination);
-                wave[i].remove(0);
-            }
-        }
-
-        if (!pvp) {
+            int killedPlants = map.getDeadPlants();
+            super.endTurn();
+            coins += 10 * (map.getDeadPlants() - killedPlants);
 
             if (!map.hasRemainingPlant())
             {
                 youHaveWon();
             }
-
-            int killedPlants = map.getDeadPlants();
-            super.endTurn();
-            coins += 10 * (map.getDeadPlants() - killedPlants);
         }
     }
 }

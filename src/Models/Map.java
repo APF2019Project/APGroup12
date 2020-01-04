@@ -7,9 +7,15 @@ public class Map
     private int deadPlants = 0 , deadZombies = 0 , sun = 0;
     private boolean brain = true;
     private ArrayList<Cell> cells = new ArrayList<Cell>();
+    private boolean[] jaroo = new boolean[10];
 
-    private Map(String type)
+    private Map(String type , boolean jaroo)
     {
+        for (int i = 1; i <= 6; i++)
+        {
+            this.jaroo[i] = jaroo;
+        }
+
         for (int i = 1; i <= 6; i++)
         {
             for (int j = 1; j <= 30; j++)
@@ -25,14 +31,30 @@ public class Map
         }
     }
 
-    public static Map createLandMap()
+    public static Map createMap(String type , boolean jaroo)
     {
-        return new Map("Land");
+        return new Map(type , jaroo);
     }
 
-    public static Map createWaterMap()
+    public void randomize(Collection plantHand)
     {
-        return new Map("Water");
+        for (int i = 1; i <= 6; i++)
+        {
+            for (int j = 2; j <= 6; j += 2)
+            {
+                Plant.putPlant(((Plant) Card.getRandomCard(plantHand)) , getByCoordination(i , j));
+            }
+        }
+    }
+
+    public void jarooUp(int row)
+    {
+        jaroo[row] = false;
+
+        for (int i = 1; i <= 19; i++)
+        {
+            getByCoordination(row , i).explode();
+        }
     }
 
     public void show()
@@ -182,5 +204,10 @@ public class Map
 
     public void addSun(int sun) {
         this.sun += sun;
+    }
+
+    public boolean getJaroo(int row)
+    {
+        return jaroo[row];
     }
 }

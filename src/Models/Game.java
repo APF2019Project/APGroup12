@@ -30,6 +30,8 @@ public class Game
     public void endTurn()
     {
         passedTurns++;
+        this.plantHand.endTurn();
+        this.zombieHand.endTurn();
         map.endTurn();
     }
 

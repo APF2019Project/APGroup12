@@ -6,6 +6,7 @@ public class DayMode extends Day
 {
     private int suns , lastWave = 0 , passedWaves = 0 , gimme = 0 , nextGift;
     private boolean pvp;
+    private int[] rowCnt = new int[10];
 
     private DayMode(Map map, Collection plantHand , Collection zombieHand , boolean pvp)
     {
@@ -52,21 +53,30 @@ public class DayMode extends Day
 
     private void startAWave()
     {
-        lastWave = passedTurns;
-        passedWaves++;
-
         Random random = new Random();
         int num = random.nextInt(7) + 4;
 
         for (int i = 0; i < num; i++)
         {
             int row = random.nextInt(6) + 1;
+
+            while (rowCnt[row] == 2)
+            {
+                row = random.nextInt(6) + 1;
+            }
+
+            rowCnt[row]++;
             Zombie zombie = (Zombie)Card.getRandomCard(zombieHand);
 
             while (!put(zombie , row))
             {
                 zombie = (Zombie)Card.getRandomCard(zombieHand);
             }
+        }
+
+        for (int i = 1; i <= 6; i++)
+        {
+            rowCnt[i] = 0;
         }
     }
 
@@ -90,12 +100,16 @@ public class DayMode extends Day
         {
             if (plant.getRequiredSuns() <= suns)
             {
-                if (plant.ready()) {
+                if (pvp)
+                {
                     selectedCard = plant;
                 }
-                else
-                {
-                    plantIsInCoolDown();
+                else {
+                    if (plant.ready()) {
+                        selectedCard = plant;
+                    } else {
+                        plantIsInCoolDown();
+                    }
                 }
             }
             else
@@ -119,6 +133,12 @@ public class DayMode extends Day
 
         int price = selectedCard.getRequiredSuns();
 
+        if (pvp && y > 6)
+        {
+            invalidCell();
+            return false;
+        }
+
         if (super.plant(x , y))
         {
             suns -= price;
@@ -133,12 +153,24 @@ public class DayMode extends Day
     {
         if (!pvp)
         {
+            boolean flag = map.hasRemainingZombie();
             super.endTurn();
-        }
 
-        if (!map.hasBrain())
-        {
-            youHaveLost();
+            if (!map.hasBrain())
+            {
+                youHaveLost();
+            }
+
+            if (flag && !map.hasRemainingZombie())
+            {
+                lastWave = passedTurns;
+                passedWaves++;
+
+                if (passedWaves == 3)
+                {
+                    youHaveWon();
+                }
+            }
         }
 
         suns += map.getSun();
@@ -152,16 +184,11 @@ public class DayMode extends Day
 
         if (!pvp)
         {
-            if (passedWaves == 3)
-            {
-                youHaveWon();
-            }
-
             if (passedTurns == 3) {
                 startAWave();
             }
 
-            if (passedTurns - lastWave == 7) {
+            if (passedWaves > 0 && passedTurns - lastWave == 7) {
                 startAWave();
             }
         }

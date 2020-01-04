@@ -5,7 +5,7 @@ public class MultiPlayerMode extends Game
     private int zr = 0 , pr = 0 , rounds = 0 , numberOfWaves;
     private DayMode plants;
     private ZombieMode zombies;
-    private int turn;
+    private int turn = 1;
 
     private MultiPlayerMode(Map map , Collection plantHand , Collection zombieHand , int numberOfWaves)
     {
@@ -29,21 +29,32 @@ public class MultiPlayerMode extends Game
     {
         System.out.println("Plants Have Won");
     }
+    private void plantsTurn()
+    {
+        System.out.println("Plants turn");
+    }
 
     private void zombiesHaveWon()
     {
         System.out.println("Zombies have won");
     }
+    private void zombiesTurn()
+    {
+        System.out.println("Zombies turn");
+    }
 
     private void start()
     {
         map.getABrain();
+        zombies.start();
 
         while (!zombies.hasWaveEnded())
         {
+            int killedPlants = map.getDeadPlants();
             super.endTurn();
             plants.endTurn();
             zombies.endTurn();
+            zombies.getCoin(10 * (map.getDeadPlants() - killedPlants));
         }
 
         if (map.hasBrain())
@@ -62,30 +73,37 @@ public class MultiPlayerMode extends Game
         if (turn == 1)
         {
             turn = 2;
+            zombiesTurn();
         }
         else
         {
             turn = 1;
             rounds++;
             start();
+            plantsTurn();
         }
 
         if (rounds == numberOfWaves)
         {
-            if (pr == zr)
+            winnerIs();
+        }
+    }
+
+    private void winnerIs()
+    {
+        if (pr == zr)
+        {
+            draw();
+        }
+        else
+        {
+            if (pr > zr)
             {
-                draw();
+                plantsHaveWon();
             }
             else
             {
-                if (pr > zr)
-                {
-                    plantsHaveWon();
-                }
-                else
-                {
-                    zombiesHaveWon();
-                }
+                zombiesHaveWon();
             }
         }
     }
