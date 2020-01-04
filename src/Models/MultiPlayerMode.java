@@ -28,19 +28,13 @@ public class MultiPlayerMode extends Game
     private void plantsHaveWon()
     {
         System.out.println("Plants Have Won");
-    }
-    private void plantsTurn()
-    {
-        System.out.println("Plants turn");
+        ended = true;
     }
 
     private void zombiesHaveWon()
     {
         System.out.println("Zombies have won");
-    }
-    private void zombiesTurn()
-    {
-        System.out.println("Zombies turn");
+        ended = true;
     }
 
     private void start()
@@ -73,14 +67,12 @@ public class MultiPlayerMode extends Game
         if (turn == 1)
         {
             turn = 2;
-            zombiesTurn();
         }
         else
         {
             turn = 1;
             rounds++;
             start();
-            plantsTurn();
         }
 
         if (rounds == numberOfWaves)

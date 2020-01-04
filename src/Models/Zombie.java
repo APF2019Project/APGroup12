@@ -141,6 +141,20 @@ public class Zombie extends Card
 
     public void getHit(Pea pea)
     {
+        if (pea.getEffect().getStunDuration() > 0)
+        {
+            Random random = new Random();
+
+            if (random.nextInt(4) == 0)
+            {
+                pea = new Pea(0 , true , pea.getEffect());
+            }
+            else
+            {
+                pea = new Pea(pea.getDamagePerShoot() , true , new Effect());
+            }
+        }
+
         effect.merge(pea.getEffect());
 
         if (shield > 0 && !pea.isPierce())

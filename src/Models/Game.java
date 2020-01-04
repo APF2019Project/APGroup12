@@ -5,6 +5,7 @@ public class Game
     protected Map map;
     protected Collection plantHand , zombieHand;
     protected int passedTurns = 0;
+    protected boolean ended = false;
 
     protected Game(Map map , Collection plantHand , Collection zombieHand)
     {
@@ -16,10 +17,13 @@ public class Game
     protected void youHaveWon()
     {
         System.out.println("You have won!");
+        ended = true;
     }
+
     protected void youHaveLost()
     {
         System.out.println("You have lost!");
+        ended = true;
     }
 
     public void showLawn()
@@ -45,5 +49,9 @@ public class Game
 
     public Collection getZombieHand() {
         return zombieHand;
+    }
+
+    public boolean isEnded() {
+        return ended;
     }
 }
