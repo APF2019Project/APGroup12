@@ -1,17 +1,32 @@
 package View;
 
-import java.util.* ;
-import Models.* ;
-import Controller.* ;
+import Controller.Controller;
+import Models.*;
+import Models.Map;
+
+import java.util.*;
+import java.util.regex.Pattern;
 
 
 public class View {
     public static String statusMenu = "Login menu" ;
     public static String gameType ;
+    private static final String name = "([\\S\\s]+)";
+    private static final String number = "([0-9]+)";
     public Scanner scanner = new Scanner(System.in) ; ///
-    
 
-
+    public void invalidCommand()
+    {
+        System.out.println("Invalid command");
+    }
+    private void plantsTurn()
+    {
+        System.out.println("Plants turn");
+    }
+    private void zombiesTurn()
+    {
+        System.out.println("Zombies turn");
+    }
 
     public void loginMenu(){
         statusMenu = "Login menu";
@@ -154,20 +169,29 @@ public class View {
             statusMenu = "Collection menu";
             gameType = "plant" ;
             collectionMenu( gameType , Profile.currentProfile );
+            run(DayMode.createDayMode(Map.createMap("Land" , true) , Profile.currentProfile.getCollection() ,
+                    Zombie.getAllZombies() , false) , Profile.currentProfile , false);
         }
         else if( inputString.equalsIgnoreCase( "Water")){
             statusMenu = "Collection menu";
             gameType = "plant" ;
             collectionMenu( gameType , Profile.currentProfile );
+            run(DayMode.createDayMode(Map.createMap("Water" , true) , Profile.currentProfile.getCollection() ,
+                    Zombie.getAllZombies() , false) , Profile.currentProfile , false);
         }
         else if( inputString.equalsIgnoreCase( "Rail")){
+            statusMenu = "Collection menu";
             gameType = "Rail" ;
-
+            collectionMenu( "plant" , Profile.currentProfile );
+            run(RailMode.createRailMode(Map.createMap("Land" , true) , Profile.currentProfile.getCollection() ,
+                    Zombie.getAllZombies()) , Profile.currentProfile , false);
         }
         else if( inputString.equalsIgnoreCase( "Zombie")){
             statusMenu = "Collection menu";
             gameType = "zombie" ;
             collectionMenu( gameType , Profile.currentProfile );
+            run(ZombieMode.createZombieMode(Map.createMap("Land" , true) , Plant.getAllPlants() ,
+                    Profile.currentProfile.getCollection() , false) , Profile.currentProfile , false);
         }
         else if( inputString.equalsIgnoreCase( "PvP")){
             System.out.println("Player 2 , Please enter your username:");
@@ -180,7 +204,7 @@ public class View {
                 if ( opponent != null)
                     break;
                 System.out.println("Player 2 , Please enter your username:");
-                 username = scanner.nextLine() ;
+                username = scanner.nextLine() ;
                 System.out.println("Player 2 , Please enter your password:");
                 password = scanner.nextLine() ;
             }
@@ -190,6 +214,9 @@ public class View {
             gameType = "PvP" ;
             collectionMenu( "plant" ,  Profile.currentProfile );
             collectionMenu( "zombie" , opponent );
+            run(MultiPlayerMode.createMultiPlayerMode(Map.createMap("Land" , true) ,
+                    Profile.currentProfile.getCollection() , opponent.getCollection() , numberOfWaves) ,
+                    Profile.currentProfile , opponent);
         }
         else if( inputString.equalsIgnoreCase( "Help")) {
             printOptions();
@@ -209,29 +236,30 @@ public class View {
         System.out.println( profile.getUsername() + "'s" + " " + "collection:");
         String inputString = scanner.nextLine() ;
         if( inputString.equalsIgnoreCase( "Show hand")){
-          Controller.printArrayList( profile.getCollection().getList() );
+            Controller.printArrayList( profile.getCollection().getList() );
+            collectionMenu( gameType , profile );
         }
         else if( inputString.equalsIgnoreCase( "Show collection")){
             if( gameType.equals("plant") )
                 profile.printUnSelectedCards("plant");
             else
                 profile.printUnSelectedCards("zombie");
-            collectionMenu( gameType , profile);
+            collectionMenu( gameType , profile );
         }
-        else if( inputString.matches("Select \\w")) {
-            String[] splitInput = inputString.split(" ");
-            String cardName = splitInput[1] ;
+        else if( inputString.matches("select " + name)) {
+            String cardName = inputString.substring(7);
             Profile.currentProfile.selectCard( gameType , cardName );
             collectionMenu( gameType , profile);
         }
-        else if( inputString.matches( "Remove \\w")){
-            String[] splitString = inputString.split( " ");
-            String cardName = splitString[1] ;
+        else if( inputString.matches( "remove " + name)){
+            String cardName = inputString.substring(7);
             Profile.currentProfile.removeCard( cardName );
             collectionMenu( gameType , profile );
         }
         else if( inputString.equalsIgnoreCase("Play"))
-            Game.playGame();                                           // !!!!!!!!
+        {
+            statusMenu = "Play menu";
+        }
         else if( inputString.equalsIgnoreCase("Help")) {
             printOptions();
             collectionMenu( gameType , profile );
@@ -256,9 +284,8 @@ public class View {
             Controller.printArrayList( Profile.currentProfile.getBoughtCards() );
             shopMenu();
         }
-        else if( inputString.matches("Buy \\w")){
-            String[] splitString = inputString.split(" ");
-            String cardName = splitString[1] ;
+        else if( inputString.matches("buy " + name)){
+            String cardName = inputString.substring(7);
             Profile.currentProfile.buyCard( cardName );
             shopMenu();
         }
@@ -340,6 +367,150 @@ public class View {
 
     }
 
+    public void run(Day game , Profile profile , boolean pvp)
+    {
+        while (true)
+        {
+            String input = scanner.nextLine();
 
+            if (game.isEnded())
+            {
+                break;
+            }
 
+            if (input.equals("end"))
+            {
+                return;
+            }
+            else if (pvp && input.equals("ready"))
+            {
+                return;
+            }
+            else if (input.equals("show"))
+            {
+                game.showLawn();
+            }
+            else if (game instanceof DayMode && input.equals("sun"))
+            {
+                System.out.println(((DayMode) game).getSuns());
+            }
+            else if (game instanceof RailMode && input.equals("record"))
+            {
+                System.out.println(game.getMap().getDeadZombies());
+            }
+            else if (Pattern.matches("select " + number , input))
+            {
+                game.select(Integer.parseInt(input.substring(7)));
+            }
+            else if (Pattern.matches("select " + name , input))
+            {
+                game.select(input.substring(7));
+            }
+            else if (Pattern.matches("plant " + number + " " + number , input))
+            {
+                String[] command = input.split(" ");
+                game.plant(Integer.parseInt(input.split(" ")[1]) , Integer.parseInt(input.split(" ")[2]));
+            }
+            else if (!pvp && input.equals("end turn"))
+            {
+                game.endTurn();
+                game.getMap().show();
+                game.showHand();
+                System.out.println();
+            }
+        }
+
+        if (!pvp)
+        {
+            profile.setRecord(Math.max(profile.getRecord() , game.getMap().getDeadZombies()));
+            profile.setCoins(profile.getCoins() + game.getMap().getDeadZombies());
+        }
+    }
+
+    public void run(ZombieMode game , Profile profile , boolean pvp)
+    {
+        while (true)
+        {
+            String input = scanner.nextLine();
+
+            if (game.isEnded())
+            {
+                break;
+            }
+
+            if (input.equals("end"))
+            {
+                return;
+            }
+            else if (pvp && input.equals("ready"))
+            {
+                return;
+            }
+            else if (input.equals("show"))
+            {
+                game.showLawn();
+            }
+            else if (input.equals("coin"))
+            {
+                System.out.println(game.getCoins());
+            }
+            else if (input.equals("show lanes"))
+            {
+                game.showLanes();
+            }
+            else if (input.equals("start"))
+            {
+                game.start();
+            }
+            else if (Pattern.matches("put " + name + " " + number + " " + number , input))
+            {
+                String[] command = input.split(" ");
+                StringBuilder zName = new StringBuilder(command[1]);
+
+                for (int i = 2; i < command.length - 2; i++)
+                {
+                    zName.append(" ").append(command[i]);
+                }
+
+                game.put(zName.toString() , Integer.parseInt(command[command.length - 2]) , Integer.parseInt(command[command.length - 1]));
+            }
+            else if (!pvp && input.equals("end turn"))
+            {
+                game.endTurn();
+                game.getMap().show();
+                game.showHand();
+                System.out.println();
+            }
+            else
+            {
+                invalidCommand();
+            }
+        }
+
+        if (!pvp) profile.setCoins(profile.getCoins() + game.getMap().getDeadPlants());
+    }
+
+    public void run(MultiPlayerMode game , Profile first , Profile second)
+    {
+        while (true)
+        {
+            if (game.isEnded())
+            {
+                break;
+            }
+
+            plantsTurn();
+            run(game.getPlants() , first , true);
+            game.ready();
+
+            if (game.isEnded())
+            {
+                break;
+            }
+
+            zombiesTurn();
+            run(game.getZombies() , second , true);
+            game.ready();
+        }
+    }
 }
