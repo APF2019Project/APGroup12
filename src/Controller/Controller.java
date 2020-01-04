@@ -4,8 +4,7 @@ import Models.Card;
 import Models.Profile;
 import View.View;
 
-
-import java.util.* ;
+import java.util.ArrayList;
 
 
 public class Controller {
@@ -30,8 +29,6 @@ public class Controller {
         }
         return false ;
     }
-
-
 
     public void gameHandle(){
         view.loginMenu();
