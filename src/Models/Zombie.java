@@ -12,6 +12,10 @@ public class Zombie extends Card
     private Effect effect = new Effect();
     private static Collection allZombies = new Collection();
 
+    static {
+        allCards.addAll(allZombies.getList());
+    }
+
     private Zombie(String type , String name , int health, int speed , int shield , ZombiePower powers ,
                    Cell coordination) {
         super(name , type , health , coordination);
@@ -19,6 +23,10 @@ public class Zombie extends Card
         this.shield = shield;
         this.powers = powers;
         this.price = ( ( 1 + this.speed ) * this.health * 10 ) ;
+    }
+
+    public static void addAll() {
+        allCards.addAll(allZombies.getList());
     }
 
     @Override

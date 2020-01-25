@@ -9,7 +9,7 @@ public class Card {
     protected String name ;
     protected int price ;
     protected int health ;
-    private  static ArrayList<Card> allCards = new ArrayList<>() ;
+    protected static ArrayList<Card> allCards = new ArrayList<Card>();
 
     protected Card(String name, String type, int health, Cell coordination)
     {

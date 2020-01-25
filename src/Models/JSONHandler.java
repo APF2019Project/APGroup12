@@ -115,6 +115,9 @@ public class JSONHandler {
             }
         }
 
+        Plant.addAll();
+        Zombie.addAll();
+
 //        for ( int i = 0 ; i < accounts.length ; i++){
 //            try {
 //                Profile profile = yaGson.fromJson( new FileReader( accounts[i]) , Profile.class ) ;

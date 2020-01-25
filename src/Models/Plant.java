@@ -8,6 +8,10 @@ public class Plant extends Card
     protected boolean cactus;
     private static Collection allPlants = new Collection();
 
+    static {
+        allCards.addAll(allPlants.getList());
+    }
+
     protected Plant(String name, String type, int health, int coolDownTime, int requiredSuns, boolean cactus,
                     Cell coordination)
     {
@@ -16,6 +20,10 @@ public class Plant extends Card
         this.requiredSuns = requiredSuns;
         this.cactus = cactus;
         this.price = ( this.requiredSuns * this.coolDownTime * this.health + 1 ) ;
+    }
+
+    public static void addAll() {
+        allCards.addAll(allPlants.getList());
     }
 
     @Override

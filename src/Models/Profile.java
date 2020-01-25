@@ -8,7 +8,7 @@ public class Profile {
     private int Coins ;
     private int sun ;
     private int record ;
-    private Shop shop ;
+    private Shop shop = new Shop();
     private Collection collection = new Collection();
     public static Profile currentProfile ;
     private ArrayList<Card> plants = new ArrayList<>() ;         // all user's plants
@@ -36,6 +36,8 @@ public class Profile {
         zombies.add(Zombie.getAllZombies().getCard("Balloon Zombie"));
         zombies.add(Zombie.getAllZombies().getCard("Bungee Zombie"));
         zombies.add(Zombie.getAllZombies().getCard("Conehead Zombie"));
+
+        Coins = 10000;
     }
 
     public void printUnSelectedCards( String type ){
@@ -111,7 +113,7 @@ public class Profile {
             System.out.println("Invalid name!");
         else if( this.getCoins() >= card.getPrice()) {
             if ( this.shop.getShopPlants().contains(card) || this.shop.getShopZombies().contains( card )) {
-                if (card.getType().equals("plant")) {
+                if (card instanceof Plant) {
                     this.getPlants().add(card);
                     this.shop.getShopPlants().remove( card ) ;
                 }
