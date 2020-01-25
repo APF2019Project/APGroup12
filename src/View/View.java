@@ -248,12 +248,12 @@ public class View {
         }
         else if( inputString.matches("select " + name)) {
             String cardName = inputString.substring(7);
-            Profile.currentProfile.selectCard( gameType , cardName );
+            profile.selectCard( gameType , cardName );
             collectionMenu( gameType , profile);
         }
         else if( inputString.matches( "remove " + name)){
             String cardName = inputString.substring(7);
-            Profile.currentProfile.removeCard( cardName );
+            profile.removeCard( cardName );
             collectionMenu( gameType , profile );
         }
         else if( inputString.equalsIgnoreCase("Play"))
@@ -284,8 +284,8 @@ public class View {
             Controller.printArrayList( Profile.currentProfile.getBoughtCards() );
             shopMenu();
         }
-        else if( inputString.matches("buy " + name)){
-            String cardName = inputString.substring(7);
+        else if( inputString.matches("buy .*")){
+            String cardName = inputString.substring(4);
             Profile.currentProfile.buyCard( cardName );
             shopMenu();
         }
@@ -410,6 +410,11 @@ public class View {
             {
                 String[] command = input.split(" ");
                 game.plant(Integer.parseInt(input.split(" ")[1]) , Integer.parseInt(input.split(" ")[2]));
+            }
+            else if (Pattern.matches("remove " + number + " " + number , input))
+            {
+                String[] command = input.split(" ");
+                game.remove(Integer.parseInt(input.split(" ")[1]) , Integer.parseInt(input.split(" ")[2]));
             }
             else if (!pvp && input.equals("end turn"))
             {
