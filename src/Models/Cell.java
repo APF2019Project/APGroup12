@@ -30,18 +30,24 @@ public class Cell {
     public void insertCard(Plant card) {
         plantAsset = card;
         card.setCoordination(this);
+        card.getCgi().put();
     }
 
     public void insertCard(Zombie card) {
         zombieAsset.add(card);
         card.setCoordination(this);
+        card.getCgi().put();
     }
 
-    public void clear() {
+    public void clear()
+    {
+        plantAsset.getCgi().delete();
         plantAsset = null;
     }
+
     public void clear(Zombie zombie)
     {
+        zombie.getCgi().delete();
         zombieAsset.remove(zombie);
     }
 
@@ -62,12 +68,13 @@ public class Cell {
                     return plantAsset != null && plantAsset.getName().equals("Lily Pad");
                 }
             } else {
-                return plantAsset == null;
+                return  plantAsset == null && ((Plant) card).getType().equals(type);
             }
         }
         else
         {
-            return plantAsset == null && ((Zombie) card).type.equals(type);
+            return ((Zombie) card).getPowers().isBungee() ||
+            (plantAsset == null && ((Zombie) card).getType().equals(type));
         }
     }
 
@@ -84,13 +91,14 @@ public class Cell {
         }
     }
 
-    public void endTurn()
-    {
-        if (plantAsset != null)
-        {
+    public void plantEndTurn() {
+        if (plantAsset != null) {
             plantAsset.doYourJob();
         }
+    }
 
+    public void zombieEndTurn()
+    {
         ArrayList<Zombie> tmp = new ArrayList<Zombie>();
 
         while (zombieAsset.size() > 0)
@@ -113,26 +121,30 @@ public class Cell {
         }
     }
 
-    public Zombie getRightZombie()
+    public Zombie getRightZombie(boolean pierce)
     {
         for (int i = y; i <= 19; i++)
         {
-            if (map.getByCoordination(x , i).getAsset() instanceof Zombie)
+            if (map.getByCoordination(x , i).getZombieAsset() != null)
             {
-                return (Zombie)(map.getByCoordination(x , i).getAsset());
+                if (pierce || !((Zombie) map.getByCoordination(x , i).getZombieAsset()).getPowers().isBalloon()) {
+                    return (Zombie) (map.getByCoordination(x, i).getZombieAsset());
+                }
             }
         }
 
         return null;
     }
 
-    public Zombie getLeftZombie()
+    public Zombie getLeftZombie(boolean pierce)
     {
         for (int i = y; i >= 1; i--)
         {
-            if (map.getByCoordination(x , i).getAsset() instanceof Zombie)
+            if (map.getByCoordination(x , i).getZombieAsset() != null)
             {
-                return (Zombie)(map.getByCoordination(x , i).getAsset());
+                if (pierce || !((Zombie) map.getByCoordination(x , i).getZombieAsset()).getPowers().isBalloon()) {
+                    return (Zombie) (map.getByCoordination(x, i).getZombieAsset());
+                }
             }
         }
 
@@ -148,11 +160,11 @@ public class Cell {
         {
             for (int j = 1; j <= 19; j++)
             {
-                if (map.getByCoordination(i , j).getAsset() instanceof Zombie)
+                if (map.getByCoordination(i , j).getZombieAsset() != null)
                 {
                     if (getDist(this , map.getByCoordination(i , j)) < dist)
                     {
-                        res = (Zombie)(map.getByCoordination(i , j).getAsset());
+                        res = (Zombie)(map.getByCoordination(i , j).getZombieAsset());
                     }
                 }
             }
@@ -161,15 +173,25 @@ public class Cell {
         return res;
     }
 
+    public void vanishPlant()
+    {
+        clear();
+    }
+
     public void killPlant()
     {
-        plantAsset = null;
+        clear();
         map.plantDown();
+    }
+
+    public void vanishZombie(Zombie zombie)
+    {
+        clear(zombie);
     }
 
     public void killZombie(Zombie zombie)
     {
-        zombieAsset.remove(zombie);
+        clear(zombie);
         map.zombieDown();
     }
 
@@ -228,6 +250,26 @@ public class Cell {
 
     public String getType() {
         return type;
+    }
+
+    public Plant getPlantAsset()
+    {
+        if (plantAsset != null)
+        {
+            return plantAsset;
+        }
+
+        return null;
+    }
+
+    public Zombie getZombieAsset()
+    {
+        if (zombieAsset.size() > 0)
+        {
+            return zombieAsset.get(0);
+        }
+
+        return null;
     }
 
     public Card getAsset()

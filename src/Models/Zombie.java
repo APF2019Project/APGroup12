@@ -5,6 +5,7 @@ import java.util.Random;
 
 public class Zombie extends Card
 {
+    private int bungeeTimer = 0;
     private int shield;
     private int speed;
     private int passedTurnsAfterUse ;  // for check coolDown
@@ -14,6 +15,15 @@ public class Zombie extends Card
 
     static {
         allCards.addAll(allZombies.getList());
+    }
+
+    private Zombie(String type , String name , int health, int speed , int shield , ZombiePower powers ,
+                   Cell coordination , String url) {
+        super(name , type , health , coordination , url);
+        this.speed = speed;
+        this.shield = shield;
+        this.powers = powers;
+        this.price = ( ( 1 + this.speed ) * this.health * 10 ) ;
     }
 
     private Zombie(String type , String name , int health, int speed , int shield , ZombiePower powers ,
@@ -32,14 +42,27 @@ public class Zombie extends Card
     @Override
     public Zombie copy()
     {
-        return new Zombie(this.type , this.name , this.health , this.speed , this.shield , this.powers.copy() ,
-                null);
+        Zombie res = new Zombie(this.type , this.name , this.health , this.speed , this.shield , this.powers.copy() ,
+                null , this.url);
+
+        this.copyCgi(res);
+        return res;
     }
 
     public static boolean putZombie(Zombie zombie , Cell coordination)
     {
-        if (coordination.checkValidity(zombie)) {
-            coordination.insertCard(zombie.copy());
+        Cell resCo = coordination;
+
+        if (zombie.getPowers().isBungee())
+        {
+            Random random = new Random();
+            resCo = coordination.getMap().getByCoordination(coordination.getX() , random.nextInt(19) + 1);
+        }
+
+        if (resCo.checkValidity(zombie))
+        {
+            Zombie fresh = zombie.copy();
+            resCo.insertCard(fresh);
             return true;
         }
 
@@ -49,7 +72,8 @@ public class Zombie extends Card
     public static Zombie getZombie()
     {
         ZombiePower zombiePower = new ZombiePower();
-        return new Zombie("Land" , "Zombie" , 2 , 2 , 0 , zombiePower , null);
+        return new Zombie("Land" , "Zombie" , 2 , 2 , 0 , zombiePower , null ,
+        "Resources/zombie.webp");
     }
 
     public static Zombie getFootballZombie()
@@ -149,18 +173,9 @@ public class Zombie extends Card
 
     public void getHit(Pea pea)
     {
-        if (pea.getEffect().getStunDuration() > 0)
+        if (this.getPowers().isBalloon() && !pea.isPierce())
         {
-            Random random = new Random();
-
-            if (random.nextInt(4) == 0)
-            {
-                pea = new Pea(0 , true , pea.getEffect());
-            }
-            else
-            {
-                pea = new Pea(pea.getDamagePerShoot() , true , new Effect());
-            }
+            return;
         }
 
         effect.merge(pea.getEffect());
@@ -184,6 +199,11 @@ public class Zombie extends Card
         if (health <= 0)
         {
             coordination.killZombie(this);
+
+            if (this.getPowers().isStrongCar())
+            {
+                putZombie(getZombie() , coordination);
+            }
         }
     }
 
@@ -235,17 +255,35 @@ public class Zombie extends Card
             return;
         }
 
-        if (effect.getStunDuration() > 0)
+        if (powers.isBungee())
         {
-            effect.decreaseSlowDuration();
-            effect.decreaseStunDuration();
-            return;
+            //System.out.println(":OO " + this.coordination.getX() + " " + this.coordination.getY() + " " + bungeeTimer);
+
+            if (bungeeTimer == 3)
+            {
+                if (coordination.getAsset() instanceof Plant) {
+                    coordination.killPlant();
+                }
+
+                coordination.vanishZombie(this);
+                return;
+            }
+
+            bungeeTimer++;
         }
 
         int curSpeed = speed;
 
-        if (effect.getSlowDuration() > 0)
+        if (effect.getSlowDuration() > 0) {
             curSpeed /= 2;
+            effect.decreaseSlowDuration();
+        }
+
+        if (effect.getStunDuration() > 0)
+        {
+            effect.decreaseStunDuration();
+            return;
+        }
 
         for (int i = 0; i < curSpeed; i++) {
             int x = coordination.getX(), y = coordination.getY();
@@ -274,8 +312,6 @@ public class Zombie extends Card
                 }
             }
         }
-
-        effect.decreaseSlowDuration();
     }
 
     public static ArrayList<Zombie> getAWave(Collection zombieHand){

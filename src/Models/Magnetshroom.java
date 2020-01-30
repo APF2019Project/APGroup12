@@ -5,29 +5,31 @@ public class Magnetshroom extends Plant
     private int currentAbsorptionCoolDown;
 
     private Magnetshroom(String name, String type, int health, int coolDownTime, int requiredSuns, boolean cactus,
-                    Cell coordination)
+                         Cell coordination , String url)
     {
-        super(name , type , health , coolDownTime  , requiredSuns , cactus , coordination);
+        super(name , type , health , coolDownTime  , requiredSuns , cactus , coordination , url);
         currentAbsorptionCoolDown = 0;
     }
 
     @Override
     public Magnetshroom copy()
     {
-        return new Magnetshroom(this.name , this.type , this.health , this.coolDownTime , this.requiredSuns ,
-                this.cactus , null);
+        Magnetshroom res = new Magnetshroom(this.name , this.type , this.health , this.coolDownTime , this.requiredSuns ,
+                this.cactus , null , null);
+
+        this.copyCgi(res);
+        return res;
     }
 
     public static Magnetshroom getMagnetshroom()
     {
         return new Magnetshroom("Magnet-shroom" , "Land" , 2 , 4 ,
-                4 , false ,  null);
+            4 , false ,  null , "Resources/magnetshroom.webp");
     }
 
     @Override
     public void doYourJob()
     {
-        System.out.println("Boooo!");
         if (coordination == null)
         {
             super.doYourJob();

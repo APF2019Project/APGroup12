@@ -54,4 +54,6 @@ public class Game
     public boolean isEnded() {
         return ended;
     }
+
+    public void end() { ended = true; }
 }

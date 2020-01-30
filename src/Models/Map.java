@@ -1,16 +1,22 @@
 package Models;
 
+import GraphicalInterface.MapGraphicalInterface;
+import javafx.scene.layout.Pane;
+
 import java.util.ArrayList;
 
 public class Map
 {
+    private MapGraphicalInterface mgi;
     private int deadPlants = 0 , deadZombies = 0 , sun = 0;
     private boolean brain = true;
     private ArrayList<Cell> cells = new ArrayList<Cell>();
     private boolean[] jaroo = new boolean[10];
 
-    private Map(String type , boolean jaroo)
+    private Map(String type , boolean jaroo , Pane pane)
     {
+        mgi = new MapGraphicalInterface(pane);
+
         for (int i = 1; i <= 6; i++)
         {
             this.jaroo[i] = jaroo;
@@ -31,9 +37,9 @@ public class Map
         }
     }
 
-    public static Map createMap(String type , boolean jaroo)
+    public static Map createMap(String type , boolean jaroo , Pane pane)
     {
-        return new Map(type , jaroo);
+        return new Map(type , jaroo , pane);
     }
 
     public void randomize(Collection plantHand)
@@ -113,10 +119,7 @@ public class Map
     {
         for (Cell cell : cells)
         {
-            if (cell.getAsset() instanceof Plant)
-            {
-                cell.endTurn();
-            }
+            cell.plantEndTurn();
         }
     }
 
@@ -124,10 +127,7 @@ public class Map
     {
         for (Cell cell : cells)
         {
-            if (cell.getAsset() instanceof Zombie)
-            {
-                cell.endTurn();
-            }
+            cell.zombieEndTurn();
         }
     }
 
@@ -209,5 +209,9 @@ public class Map
     public boolean getJaroo(int row)
     {
         return jaroo[row];
+    }
+
+    public MapGraphicalInterface getMgi() {
+        return mgi;
     }
 }

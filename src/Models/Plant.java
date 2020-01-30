@@ -13,9 +13,9 @@ public class Plant extends Card
     }
 
     protected Plant(String name, String type, int health, int coolDownTime, int requiredSuns, boolean cactus,
-                    Cell coordination)
+                    Cell coordination , String url)
     {
-        super(name , type , health , coordination);
+        super(name , type , health , coordination , url);
         this.coolDownTime = coolDownTime;
         this.requiredSuns = requiredSuns;
         this.cactus = cactus;
@@ -29,15 +29,19 @@ public class Plant extends Card
     @Override
     public Plant copy()
     {
-        return new Plant(this.name , this.type , this.health , this.coolDownTime , this.requiredSuns ,
-                this.cactus , null);
+        Plant res = new Plant(this.name , this.type , this.health , this.coolDownTime , this.requiredSuns ,
+                this.cactus , null , this.url);
+
+        this.copyCgi(res);
+        return res;
     }
 
     public static boolean putPlant(Plant plant, Cell coordination)
     {
         if (coordination.checkValidity(plant)) {
-            plant.currentCoolDownTime = plant.coolDownTime;
-            coordination.insertCard(plant.copy());
+            Plant fresh = plant.copy();
+            fresh.currentCoolDownTime = plant.coolDownTime;
+            coordination.insertCard(fresh);
             return true;
         }
 
@@ -97,7 +101,7 @@ public class Plant extends Card
     public static Plant getExplodeonut()
     {
         return new Plant("Explode-o-nut" , "Land" , 3 , 5 , 4 , true ,
-                null);
+                null , "Resources/explodeonut.webp");
     }
 
     public static Plant getMelonpult()
@@ -108,7 +112,7 @@ public class Plant extends Card
     public static Plant getLilyPad()
     {
         return new Plant("Lily Pad" , "Water" , 1 , 1 , 0 , false ,
-                null);
+                null , "Resources/lilypad.webp");
     }
 
     public static Plant getWinterMelon()
@@ -119,7 +123,7 @@ public class Plant extends Card
     public static Plant getWallnut()
     {
         return new Plant("Wall-nut" , "Land" , 4 , 4 , 2 , false ,
-                null);
+                null , "Resources/wallnut.webp");
     }
 
     public static Plant getTangleKelp()
@@ -130,7 +134,7 @@ public class Plant extends Card
     public static Plant getTallnut()
     {
         return new Plant("Tall-nut" , "Land" , 6 , 6 , 4 , false ,
-                null);
+                null , "Resources/tallnut.webp");
     }
 
     public static Plant getCattail()
@@ -173,8 +177,8 @@ public class Plant extends Card
             {
                 if (((ExplosivePlant) this).getDelay() == 0)
                 {
-                    zombie.getDestroyed();
-                    this.getDestroyed();
+                    coordination.killZombie(zombie);
+                    coordination.vanishPlant();
                 }
             }
         }

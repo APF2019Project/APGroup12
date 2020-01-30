@@ -36,7 +36,7 @@ public class RailMode extends Day
     {
         Random random = new Random();
         int row = random.nextInt(6) + 1;
-        Cell coordination = map.getByCoordination(row , 19);
+        Cell coordination = map.getByCoordination(row , 20);
         while (!Zombie.putZombie((Zombie)(Card.getRandomCard(zombieHand)) , coordination));
         dontGimme = 0;
         nextZombie = random.nextInt(3) + 3;

@@ -6,9 +6,9 @@ public class ExplosivePlant extends Plant {
     private int delay;
 
     private ExplosivePlant(String name , String type , int health , int coolDownTime , int requiredSuns ,
-                           boolean cactus, int delay , Cell coordination)
+                           boolean cactus, int delay , Cell coordination , String url)
     {
-        super(name , type , health , coolDownTime , requiredSuns , cactus , coordination);
+        super(name , type , health , coolDownTime , requiredSuns , cactus , coordination , url);
         this.delay = delay;
         this.coordination = coordination;
     }
@@ -16,32 +16,35 @@ public class ExplosivePlant extends Plant {
     @Override
     public ExplosivePlant copy()
     {
-        return new ExplosivePlant(this.name , this.type , this.health , this.coolDownTime , this.requiredSuns ,
-                this.cactus , this.delay , null);
+        ExplosivePlant res = new ExplosivePlant(this.name , this.type , this.health , this.coolDownTime , this.requiredSuns ,
+                this.cactus , this.delay , null , this.url);
+
+        this.copyCgi(res);
+        return res;
     }
 
     public static ExplosivePlant getTangleKelp()
     {
         return new ExplosivePlant("Tangle Kelp" , "Water" , 100 , 3 , 3 ,
-                false , 0 , null);
+                false , 0 , null , "Resources/tanglekelp.webp");
     }
 
     public static ExplosivePlant getPotatoMine()
     {
         return new ExplosivePlant("Potato Mine" , "Land" , 1 , 3 , 2 ,
-                false , 1 , null);
+                false , 1 , null , "Resources/potatomine.webp");
     }
 
     public static ExplosivePlant getCherryBomb()
     {
         return new ExplosivePlant("Cherry Bomb" , "Land" , 100 , 4 , 2 ,
-                false , 0 , null);
+                false , 0 , null , "Resources/cherrybomb.webp");
     }
 
     public static ExplosivePlant getJalapeno()
     {
         return new ExplosivePlant("Jalapeno" , "Land" , 100 , 5 , 4 ,
-                false , 0  , null);
+                false , 0  , null , "Resources/jalapeno.webp");
     }
 
     private ArrayList<Cell> getAffectedCells()
@@ -99,7 +102,7 @@ public class ExplosivePlant extends Plant {
                     cell.explode();
                 }
 
-                coordination.killPlant();
+                coordination.vanishPlant();
             }
         }
         else

@@ -29,7 +29,7 @@ public class Collection
         return list.size();
     }
 
-    void add(Card card)
+    public void add(Card card)
     {
         list.add(card);
     }
@@ -39,7 +39,7 @@ public class Collection
         list.remove(card);
     }
 
-    Card getCard(String name)
+    public Card getCard(String name)
     {
         for (Card card : list)
         {

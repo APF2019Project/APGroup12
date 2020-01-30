@@ -3,17 +3,21 @@ package Models;
 public class Scardyshroom extends AttackerPlant
 {
     private Scardyshroom(String name, String type, int health, int coolDownTime, int requiredSuns, boolean cactus,
-                 Pea pea, int numberOfBulletsPerShoot, int coolDownForNextShoot, String direction, Cell coordination) {
+                 Pea pea, int numberOfBulletsPerShoot, int coolDownForNextShoot, String direction, Cell coordination,
+                         String url) {
         super(name, type, health, coolDownTime, requiredSuns, cactus, pea, numberOfBulletsPerShoot,
-                coolDownForNextShoot, direction, coordination);
+                coolDownForNextShoot, direction, coordination , url);
     }
 
     @Override
     public Scardyshroom copy()
     {
-        return new Scardyshroom(this.name , this.type , this.health , this.coolDownTime , this.requiredSuns ,
+        Scardyshroom res = new Scardyshroom(this.name , this.type , this.health , this.coolDownTime , this.requiredSuns ,
                 this.cactus , this.pea , this.numberOfBulletsPerShoot , this.coolDownForNextShoot ,
-                this.direction , null);
+                this.direction , null , this.url);
+
+        this.copyCgi(res);
+        return res;
     }
 
     public static Scardyshroom getScardyshroom()
@@ -21,7 +25,8 @@ public class Scardyshroom extends AttackerPlant
         Effect effect = new Effect(0 , 0 , false , false);
         Pea pea = new Pea(1 , false , effect);
         return new Scardyshroom("Scaredy-shroom" , "Land" , 1 , 2 , 1 ,
-                false , pea , 1 , 2 , "Right" , null);
+                false , pea , 1 , 2 , "Right" , null ,
+                "Resources/scardyshroom.webp");
     }
 
     @Override
@@ -33,9 +38,9 @@ public class Scardyshroom extends AttackerPlant
             return;
         }
 
-        Zombie target = coordination.getRightZombie();
+        Zombie target = coordination.getRightZombie(pea.isPierce());
 
-        if (target.getCoordination().getX() - coordination.getX() <= 2)
+        if (target == null || target.getCoordination().getY() - coordination.getY() <= 2)
         {
             return;
         }

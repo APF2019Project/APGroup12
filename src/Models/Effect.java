@@ -36,7 +36,7 @@ public class Effect
     }
 
     public void decreaseStunDuration() {
-        if (slowDuration > 0) stunDuration--;
+        if (stunDuration > 0) stunDuration--;
     }
 
     public boolean isSlow() {
