@@ -1,15 +1,15 @@
 {
   "@type": "Models.ExplosivePlant",
   "@val": {
-    "delay": 0,
+    "delay": 1,
     "requiredSuns": 2,
-    "coolDownTime": 4,
+    "coolDownTime": 3,
     "currentCoolDownTime": 0,
     "cactus": false,
     "type": "Land",
-    "name": "Cherry Bomb",
-    "price": 801,
-    "health": 100,
-    "url": "Resources/cherrybomb.webp"
+    "name": "Potato Mine",
+    "price": 7,
+    "health": 1,
+    "url": "Resources/potatomine.webp"
   }
 }
