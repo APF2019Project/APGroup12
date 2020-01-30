@@ -1,41 +1,28 @@
 {
-  "@type": "Models.Plant",
+  "@type": "Models.AttackerPlant",
   "@val": {
+    "pea": {
+      "effect": {
+        "slowDuration": 0,
+        "stunDuration": 0,
+        "slow": false,
+        "stun": false
+      },
+      "damagePerShoot": 1,
+      "pierce": false
+    },
+    "numberOfBulletsPerShoot": 4,
+    "coolDownForNextShoot": 5,
+    "currentCoolDownForNextShoot": 0,
+    "direction": "Right",
     "requiredSuns": 5,
+    "coolDownTime": 4,
+    "currentCoolDownTime": 0,
     "cactus": false,
-    "powers": [
-      {
-        "peaShooter": false,
-        "snowPea": false,
-        "cabbagePult": false,
-        "repeater": false,
-        "threepeater": false,
-        "cactus": false,
-        "gatlingPea": true,
-        "scaredyShroom": false,
-        "kernelPult": false,
-        "splitPea": false,
-        "ExplodeNut": false,
-        "melonPult": false,
-        "lilyPad": false,
-        "winterMelon": false,
-        "wallNut": false,
-        "tangleKelp": false,
-        "tallNut": false,
-        "cattail": false,
-        "potatoMin": false,
-        "cherryBomb": false,
-        "magnetShroom": false,
-        "sunFlower": false,
-        "twinSunflower": false,
-        "jalapeno": false
-      }
-    ],
-    "type": "plant",
+    "type": "Land",
     "name": "Gatling Pea",
     "price": 61,
-    "coolDownTime": 4,
     "health": 3,
-    "currentCoolDownTime": 0
+    "url": "Resources/gatlingpea.webp"
   }
 }

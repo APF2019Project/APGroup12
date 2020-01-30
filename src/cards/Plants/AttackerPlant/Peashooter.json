@@ -1,41 +1,28 @@
 {
-  "@type": "Models.Plant",
+  "@type": "Models.AttackerPlant",
   "@val": {
+    "pea": {
+      "effect": {
+        "slowDuration": 0,
+        "stunDuration": 0,
+        "slow": false,
+        "stun": false
+      },
+      "damagePerShoot": 1,
+      "pierce": false
+    },
+    "numberOfBulletsPerShoot": 1,
+    "coolDownForNextShoot": 2,
+    "currentCoolDownForNextShoot": 0,
+    "direction": "Right",
     "requiredSuns": 2,
+    "coolDownTime": 2,
+    "currentCoolDownTime": 0,
     "cactus": false,
-    "powers": [
-      {
-        "peaShooter": true,
-        "snowPea": false,
-        "cabbagePult": false,
-        "repeater": false,
-        "threepeater": false,
-        "cactus": false,
-        "gatlingPea": false,
-        "scaredyShroom": false,
-        "kernelPult": false,
-        "splitPea": false,
-        "ExplodeNut": false,
-        "melonPult": false,
-        "lilyPad": false,
-        "winterMelon": false,
-        "wallNut": false,
-        "tangleKelp": false,
-        "tallNut": false,
-        "cattail": false,
-        "potatoMin": false,
-        "cherryBomb": false,
-        "magnetShroom": false,
-        "sunFlower": false,
-        "twinSunflower": false,
-        "jalapeno": false
-      }
-    ],
-    "type": "plant",
+    "type": "Land",
     "name": "Peashooter",
     "price": 9,
-    "coolDownTime": 2,
     "health": 2,
-    "currentCoolDownTime": 0
+    "url": "Resources/peashooter.webp"
   }
 }

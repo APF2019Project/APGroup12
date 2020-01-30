@@ -1,41 +1,28 @@
 {
-  "@type": "Models.Plant",
+  "@type": "Models.AttackerPlant",
   "@val": {
+    "pea": {
+      "effect": {
+        "slowDuration": 0,
+        "stunDuration": 2,
+        "slow": false,
+        "stun": true
+      },
+      "damagePerShoot": 0,
+      "pierce": true
+    },
+    "numberOfBulletsPerShoot": 1,
+    "coolDownForNextShoot": 4,
+    "currentCoolDownForNextShoot": 0,
+    "direction": "Right",
     "requiredSuns": 3,
+    "coolDownTime": 3,
+    "currentCoolDownTime": 0,
     "cactus": false,
-    "powers": [
-      {
-        "peaShooter": false,
-        "snowPea": false,
-        "cabbagePult": false,
-        "repeater": false,
-        "threepeater": false,
-        "cactus": false,
-        "gatlingPea": false,
-        "scaredyShroom": false,
-        "kernelPult": true,
-        "splitPea": false,
-        "ExplodeNut": false,
-        "melonPult": false,
-        "lilyPad": false,
-        "winterMelon": false,
-        "wallNut": false,
-        "tangleKelp": false,
-        "tallNut": false,
-        "cattail": false,
-        "potatoMin": false,
-        "cherryBomb": false,
-        "magnetShroom": false,
-        "sunFlower": false,
-        "twinSunflower": false,
-        "jalapeno": false
-      }
-    ],
-    "type": "plant",
+    "type": "Land",
     "name": "Kernel-pult",
     "price": 19,
-    "coolDownTime": 3,
     "health": 2,
-    "currentCoolDownTime": 0
+    "url": "Resources/kernelpult.webp"
   }
 }
