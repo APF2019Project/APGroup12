@@ -1,8 +1,12 @@
 package View;
 
 import Controller.Controller;
-import Models.*;
 import Models.Map;
+import Models.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -28,7 +32,7 @@ public class View {
         System.out.println("Zombies turn");
     }
 
-    public void loginMenu(){
+    public void loginMenu() throws InterruptedException {
         statusMenu = "Login menu";
         String inputString = scanner.nextLine() ;
         if( inputString.equalsIgnoreCase("create account")){
@@ -74,7 +78,7 @@ public class View {
         }
     }
 
-    public void mainMenu(){
+    public void mainMenu() throws InterruptedException {
         String inputString = scanner.nextLine() ;
         if( inputString.equalsIgnoreCase("Play")){
             statusMenu = "Play menu" ;
@@ -102,7 +106,7 @@ public class View {
         }
     }
 
-    public void profileMenu(){
+    public void profileMenu() throws InterruptedException {
         String inputString = scanner.nextLine() ;
         if( inputString.equalsIgnoreCase( "Change")){
             String username = scanner.nextLine() ;
@@ -163,34 +167,34 @@ public class View {
         }
     }
 
-    public void playMenu(){
+    public void playMenu() throws InterruptedException {
         String inputString =scanner.nextLine() ;
         if( inputString.equalsIgnoreCase("Day")){
             statusMenu = "Collection menu";
             gameType = "plant" ;
             collectionMenu( gameType , Profile.currentProfile );
-            run(DayMode.createDayMode(Map.createMap("Land" , true) , Profile.currentProfile.getCollection() ,
+            run(DayMode.createDayMode(Map.createMap("Land" , true , new Pane()) , Profile.currentProfile.getCollection() ,
                     Zombie.getAllZombies() , false) , Profile.currentProfile , false);
         }
         else if( inputString.equalsIgnoreCase( "Water")){
             statusMenu = "Collection menu";
             gameType = "plant" ;
             collectionMenu( gameType , Profile.currentProfile );
-            run(DayMode.createDayMode(Map.createMap("Water" , true) , Profile.currentProfile.getCollection() ,
+            run(DayMode.createDayMode(Map.createMap("Water" , true , new Pane()) , Profile.currentProfile.getCollection() ,
                     Zombie.getAllZombies() , false) , Profile.currentProfile , false);
         }
         else if( inputString.equalsIgnoreCase( "Rail")){
             statusMenu = "Collection menu";
             gameType = "Rail" ;
             collectionMenu( "plant" , Profile.currentProfile );
-            run(RailMode.createRailMode(Map.createMap("Land" , true) , Profile.currentProfile.getCollection() ,
+            run(RailMode.createRailMode(Map.createMap("Land" , true , new Pane()) , Profile.currentProfile.getCollection() ,
                     Zombie.getAllZombies()) , Profile.currentProfile , false);
         }
         else if( inputString.equalsIgnoreCase( "Zombie")){
             statusMenu = "Collection menu";
             gameType = "zombie" ;
             collectionMenu( gameType , Profile.currentProfile );
-            run(ZombieMode.createZombieMode(Map.createMap("Land" , true) , Plant.getAllPlants() ,
+            run(ZombieMode.createZombieMode(Map.createMap("Land" , true , new Pane()) , Plant.getAllPlants() ,
                     Profile.currentProfile.getCollection() , false) , Profile.currentProfile , false);
         }
         else if( inputString.equalsIgnoreCase( "PvP")){
@@ -214,7 +218,7 @@ public class View {
             gameType = "PvP" ;
             collectionMenu( "plant" ,  Profile.currentProfile );
             collectionMenu( "zombie" , opponent );
-            run(MultiPlayerMode.createMultiPlayerMode(Map.createMap("Land" , true) ,
+            run(MultiPlayerMode.createMultiPlayerMode(Map.createMap("Land" , true , new Pane()) ,
                     Profile.currentProfile.getCollection() , opponent.getCollection() , numberOfWaves) ,
                     Profile.currentProfile , opponent);
         }
@@ -232,7 +236,7 @@ public class View {
         }
     }
 
-    public void collectionMenu( String gameType , Profile profile ){
+    public void collectionMenu( String gameType , Profile profile ) throws InterruptedException {
         System.out.println( profile.getUsername() + "'s" + " " + "collection:");
         String inputString = scanner.nextLine() ;
         if( inputString.equalsIgnoreCase( "Show hand")){
@@ -274,7 +278,7 @@ public class View {
         }
     }
 
-    public void shopMenu(){
+    public void shopMenu() throws InterruptedException {
         String inputString = scanner.nextLine() ;
         if( inputString.equalsIgnoreCase("Show shop") ) {
             Profile.currentProfile.printShopCards();
@@ -308,7 +312,7 @@ public class View {
 
     }
 
-    public void showLeaderBoard(){
+    public void showLeaderBoard() throws InterruptedException {
         Collections.sort( Profile.getAllProfiles() , new ProfileComparator());
         System.out.println("LeaderBoard:");
         for ( Profile profile : Profile.getAllProfiles()) {
@@ -367,69 +371,88 @@ public class View {
 
     }
 
-    public void run(Day game , Profile profile , boolean pvp)
+    public void runCommand(Day game , Profile profile , boolean pvp , TextField tf)
     {
-        while (true)
+        String input = tf.getText();
+
+        if (game.isEnded())
         {
-            String input = scanner.nextLine();
-
-            if (game.isEnded())
-            {
-                break;
-            }
-
-            if (input.equals("end"))
-            {
-                return;
-            }
-            else if (pvp && input.equals("ready"))
-            {
-                return;
-            }
-            else if (input.equals("show"))
-            {
-                game.showLawn();
-            }
-            else if (game instanceof DayMode && input.equals("sun"))
-            {
-                System.out.println(((DayMode) game).getSuns());
-            }
-            else if (game instanceof RailMode && input.equals("record"))
-            {
-                System.out.println(game.getMap().getDeadZombies());
-            }
-            else if (Pattern.matches("select " + number , input))
-            {
-                game.select(Integer.parseInt(input.substring(7)));
-            }
-            else if (Pattern.matches("select " + name , input))
-            {
-                game.select(input.substring(7));
-            }
-            else if (Pattern.matches("plant " + number + " " + number , input))
-            {
-                String[] command = input.split(" ");
-                game.plant(Integer.parseInt(input.split(" ")[1]) , Integer.parseInt(input.split(" ")[2]));
-            }
-            else if (Pattern.matches("remove " + number + " " + number , input))
-            {
-                String[] command = input.split(" ");
-                game.remove(Integer.parseInt(input.split(" ")[1]) , Integer.parseInt(input.split(" ")[2]));
-            }
-            else if (!pvp && input.equals("end turn"))
-            {
-                game.endTurn();
-                game.getMap().show();
-                game.showHand();
-                System.out.println();
-            }
+            return;
         }
 
-        if (!pvp)
+        if (input.equals("end"))
         {
-            profile.setRecord(Math.max(profile.getRecord() , game.getMap().getDeadZombies()));
+            endDay(game , profile , pvp , tf);
+        }
+        else if (pvp && input.equals("ready"))
+        {
+            return;
+        }
+        else if (input.equals("show"))
+        {
+            game.showLawn();
+        }
+        else if (game instanceof DayMode && input.equals("sun"))
+        {
+            System.out.println(((DayMode) game).getSuns());
+        }
+        else if (game instanceof RailMode && input.equals("record"))
+        {
+            System.out.println(game.getMap().getDeadZombies());
+        }
+        else if (Pattern.matches("select " + number , input))
+        {
+            game.select(Integer.parseInt(input.substring(7)));
+        }
+        else if (Pattern.matches("select " + name , input))
+        {
+            game.select(input.substring(7));
+        }
+        else if (Pattern.matches("plant " + number + " " + number , input))
+        {
+            String[] command = input.split(" ");
+            game.plant(Integer.parseInt(input.split(" ")[1]) , Integer.parseInt(input.split(" ")[2]));
+        }
+        else if (Pattern.matches("remove " + number + " " + number , input))
+        {
+            String[] command = input.split(" ");
+            game.remove(Integer.parseInt(input.split(" ")[1]) , Integer.parseInt(input.split(" ")[2]));
+        }
+        else if (!pvp && input.equals("end turn"))
+        {
+            game.endTurn();
+            game.getMap().show();
+            game.showHand();
+            System.out.println();
+        }
+    }
+
+    public void endDay(Day game , Profile profile , boolean pvp , TextField tf)
+    {
+        game.end();
+        tf.setOnAction(null);
+
+        if (!pvp) {
+            profile.setRecord(Math.max(profile.getRecord(), game.getMap().getDeadZombies()));
             profile.setCoins(profile.getCoins() + game.getMap().getDeadZombies());
         }
+    }
+
+    public void run(Day game , Profile profile , boolean pvp) throws InterruptedException
+    {
+        TextField tf = new TextField();
+        tf.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                runCommand(game , profile , false , tf);
+                tf.setText("");
+            }
+        });
+
+        System.out.println(":D");
+        game.getMap().getMgi().getPane().getChildren().add(tf);
     }
 
     public void run(ZombieMode game , Profile profile , boolean pvp)
@@ -495,8 +518,7 @@ public class View {
         if (!pvp) profile.setCoins(profile.getCoins() + game.getMap().getDeadPlants());
     }
 
-    public void run(MultiPlayerMode game , Profile first , Profile second)
-    {
+    public void run(MultiPlayerMode game , Profile first , Profile second) throws InterruptedException {
         while (true)
         {
             if (game.isEnded())
