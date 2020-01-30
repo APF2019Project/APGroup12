@@ -30,7 +30,7 @@ public class Controller {
         return false ;
     }
 
-    public void gameHandle(){
+    public void gameHandle() throws InterruptedException {
         view.loginMenu();
 
     }
